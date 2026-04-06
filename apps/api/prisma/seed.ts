@@ -101,6 +101,24 @@ async function main() {
     prisma.routeStop.upsert({ where: { name_routeId: { name: 'Suame', routeId: temRoute3.id } }, update: {}, create: { name: 'Suame', routeId: temRoute3.id } }),
   ]);
   console.log('✅ Seeded Routes & Stops');
+  // ── Default Super Admin ───────────────────────────────────────────────────
+  // Only creates if no admin exists yet
+  const existingAdmin = await prisma.admin.findFirst();
+  if (!existingAdmin) {
+    const bcrypt = await import('bcrypt');
+    const hashedPassword = await bcrypt.hash('Admin@123', 12);
+    await prisma.admin.create({
+      data: {
+        name: 'Super Admin',
+        email: 'admin@trip.com',
+        password: hashedPassword,
+        role: 'SUPER_ADMIN',
+      },
+    });
+    console.log('✅ Seeded default Super Admin (admin@trip.com / Admin@123)');
+  } else {
+    console.log('ℹ️  Admin account already exists, skipping super admin seed');
+  }
 
   console.log('🎉 Seeding complete!');
 }

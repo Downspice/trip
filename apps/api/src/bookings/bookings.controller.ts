@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { PreviewBookingDto } from './dto/preview-booking.dto';
 import { PreviewVisitBookingDto } from './dto/preview-visit-booking.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('bookings')
 export class BookingsController {
@@ -17,11 +18,13 @@ export class BookingsController {
     return this.bookingsService.previewVisit(dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.bookingsService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('clear')
   clearAll() {
     return this.bookingsService.clearAll();

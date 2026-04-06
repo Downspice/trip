@@ -5,6 +5,16 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
+api.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface House { id: string; name: string; }
@@ -287,6 +297,44 @@ export const getBanks = async (): Promise<PaystackBank[]> => {
 
 export const initiateWithdrawal = async (payload: WithdrawPayload): Promise<any> => {
   const { data } = await api.post('/admin/finances/withdraw', payload);
+  return data;
+};
+
+// ─── Auth / Admin Management ──────────────────────────────────────────────────
+
+export const adminLogin = async (payload: any) => {
+  const { data } = await api.post('/auth/login', payload);
+  return data;
+};
+
+export const getProfile = async () => {
+  const { data } = await api.get('/auth/profile');
+  return data;
+};
+
+export const adminLogout = () => {
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('adminToken');
+  }
+};
+
+export const listAdmins = async () => {
+  const { data } = await api.get('/auth/admins');
+  return data;
+};
+
+export const createAdmin = async (payload: any) => {
+  const { data } = await api.post('/auth/admins', payload);
+  return data;
+};
+
+export const updateAdmin = async (id: string, payload: any) => {
+  const { data } = await api.patch(`/auth/admins/${id}`, payload);
+  return data;
+};
+
+export const deleteAdmin = async (id: string) => {
+  const { data } = await api.delete(`/auth/admins/${id}`);
   return data;
 };
 

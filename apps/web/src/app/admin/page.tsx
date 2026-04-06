@@ -1,50 +1,76 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { BarChart3, Settings2, ArrowRight, Wallet } from 'lucide-react';
-
-const cards = [
-  {
-    title: 'Dashboard',
-    description: 'View live booking statistics, filter by school or type, and manage all student trips and parent visits.',
-    icon: BarChart3,
-    href: '/admin/dashboard',
-    accent: 'from-blue-600 to-indigo-600',
-    bg: 'hover:bg-blue-50/60',
-    iconBg: 'bg-blue-100 text-blue-700',
-  },
-  {
-    title: 'Platform Configuration',
-    description: 'Manage schools, houses, academic programmes, and trip routes with 3-tier pricing and stop points.',
-    icon: Settings2,
-    href: '/admin/config',
-    accent: 'from-slate-700 to-slate-900',
-    bg: 'hover:bg-slate-50/60',
-    iconBg: 'bg-slate-100 text-slate-700',
-  },
-  {
-    title: 'Manage Finances',
-    description: 'View live Paystack balance, review withdrawal history, and transfer funds to a bank account or mobile wallet.',
-    icon: Wallet,
-    href: '/admin/finances',
-    accent: 'from-emerald-600 to-teal-600',
-    bg: 'hover:bg-emerald-50/60',
-    iconBg: 'bg-emerald-100 text-emerald-700',
-  },
-];
+import { BarChart3, Settings2, ArrowRight, Wallet, Users, LogOut } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
 
 export default function AdminLandingPage() {
   const router = useRouter();
+  const { admin, logout } = useAuth();
+
+  const cards = [
+    {
+      title: 'Dashboard',
+      description: 'View live booking statistics, filter by school or type, and manage all student trips and parent visits.',
+      icon: BarChart3,
+      href: '/admin/dashboard',
+      accent: 'from-blue-600 to-indigo-600',
+      bg: 'hover:bg-blue-50/60',
+      iconBg: 'bg-blue-100 text-blue-700',
+    },
+    {
+      title: 'Platform Configuration',
+      description: 'Manage schools, houses, academic programmes, and trip routes with 3-tier pricing and stop points.',
+      icon: Settings2,
+      href: '/admin/config',
+      accent: 'from-slate-700 to-slate-900',
+      bg: 'hover:bg-slate-50/60',
+      iconBg: 'bg-slate-100 text-slate-700',
+    },
+    {
+      title: 'Manage Finances',
+      description: 'View live Paystack balance, review withdrawal history, and transfer funds to a bank account or mobile wallet.',
+      icon: Wallet,
+      href: '/admin/finances',
+      accent: 'from-emerald-600 to-teal-600',
+      bg: 'hover:bg-emerald-50/60',
+      iconBg: 'bg-emerald-100 text-emerald-700',
+    },
+  ];
+
+  if (admin?.role === 'SUPER_ADMIN') {
+    cards.push({
+      title: 'Admin Accounts',
+      description: 'Create and manage supplementary administrator accounts with specific roles.',
+      icon: Users,
+      href: '/admin/accounts',
+      accent: 'from-purple-600 to-fuchsia-600',
+      bg: 'hover:bg-purple-50/60',
+      iconBg: 'bg-purple-100 text-purple-700',
+    });
+  }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex flex-col items-center justify-center p-8">
-      <div className="w-full max-w-3xl">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex items-center justify-center p-8 relative">
+      {/* Top right user info */}
+      <div className="absolute top-6 right-8 flex items-center gap-4">
+        <div className="text-right">
+          <p className="text-sm font-bold text-gray-900">{admin?.name}</p>
+          <p className="text-xs text-gray-500 uppercase tracking-wider">{admin?.role?.replace('_', ' ')}</p>
+        </div>
+        <Button variant="outline" size="icon" onClick={logout} title="Log out">
+          <LogOut className="w-4 h-4 text-gray-600" />
+        </Button>
+      </div>
+
+      <div className="w-full max-w-4xl">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-black text-gray-900 tracking-tight mb-2">Admin Panel</h1>
           <p className="text-gray-500">Choose a section to manage.</p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cards.map(({ title, description, icon: Icon, href, bg, iconBg, accent }) => (
             <button
               key={href}

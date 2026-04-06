@@ -3,7 +3,8 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
 import serverless from 'serverless-http';
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from 'src/app.module';
+// Import AppModule from the source directory relative to the new api/ structure
+import { AppModule } from '../src/app.module';
 
 let cachedServer: any;
 
@@ -22,8 +23,8 @@ async function setupApp(app: any) {
     }),
   );
 
-  // ⚠️ remove this unless you really need it
-  // app.setGlobalPrefix('api');
+  // We DO need to keep the `/api` prefix because Vercel automatically passes the root URL starting with `/api` to lambda endpoints inside `api/`
+  app.setGlobalPrefix('api');
 }
 
 async function bootstrap() {

@@ -32,8 +32,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only check auth on /admin or /bookings routes
-    if (!pathname?.startsWith('/admin') && !pathname?.startsWith('/bookings')) {
+    // Only check auth on /admin routes
+    if (!pathname?.startsWith('/admin')) {
       setLoading(false);
       return;
     }
@@ -70,7 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     router.push('/admin/login');
   };
 
-  const isProtectedPath = pathname?.startsWith('/admin') || pathname?.startsWith('/bookings');
+  const isProtectedPath = pathname?.startsWith('/admin');
 
   if (loading && isProtectedPath) {
     return (

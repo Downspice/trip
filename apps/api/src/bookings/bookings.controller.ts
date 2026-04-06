@@ -18,7 +18,7 @@ export class BookingsController {
     return this.bookingsService.previewVisit(dto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.bookingsService.findAll();

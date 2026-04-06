@@ -10,7 +10,7 @@ let cachedServer: any;
 
 async function setupApp(app: any) {
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || 'https://trip-web-indol-nu.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true,
   });

@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { FinancesService, WithdrawDto } from './finances.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('admin/finances')
 export class FinancesController {
   constructor(private readonly financesService: FinancesService) {}
@@ -25,3 +27,4 @@ export class FinancesController {
     return this.financesService.withdraw(dto);
   }
 }
+

@@ -1,12 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import express from 'express';
-import serverless from 'serverless-http';
 import { ValidationPipe } from '@nestjs/common';
-// Import AppModule from the source directory relative to the new api/ structure
 import { AppModule } from '../src/app.module';
 
-let cachedServer: any;
+let cachedApp: any;
 
 async function setupApp(app: any) {
   app.enableCors({
@@ -23,12 +21,12 @@ async function setupApp(app: any) {
     }),
   );
 
-  // We DO need to keep the `/api` prefix because Vercel automatically passes the root URL starting with `/api` to lambda endpoints inside `api/`
   app.setGlobalPrefix('api');
 }
 
 async function bootstrap() {
-  if (!cachedServer) {
+  if (!cachedApp) {
+    console.info('🚀 [Vercel] Bootstrap starting...');
     const expressApp = express();
     const app = await NestFactory.create(
       AppModule,
@@ -37,13 +35,21 @@ async function bootstrap() {
 
     await setupApp(app);
     await app.init();
+    console.info('✅ [Vercel] Nest application initialized');
 
-    cachedServer = serverless(expressApp);
+    cachedApp = expressApp;
   }
-  return cachedServer;
+  return cachedApp;
 }
 
 export default async function handler(req: any, res: any) {
-  const server = await bootstrap();
-  return server(req, res);
+  console.info(`⏳ [Vercel] Handler invoked: ${req.method} ${req.url}`);
+  const app = await bootstrap();
+  
+  try {
+    return app(req, res);
+  } catch (error) {
+    console.error(`❌ [Vercel] Execution error: ${req.url}`, error);
+    throw error;
+  }
 }

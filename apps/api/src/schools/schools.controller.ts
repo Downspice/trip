@@ -14,6 +14,7 @@ export class SchoolsController {
 
   @Get()
   findAll() {
+    console.info('👉 [SchoolsController] findAll() reached');
     return this.schoolsService.findAll();
   }
 

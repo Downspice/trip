@@ -13,6 +13,9 @@ module.exports = {
       screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-nunito)", "system-ui", "sans-serif"],
+      },
       colors: {
         border: "var(--border)",
         input: "var(--input)",

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 const nunito = Nunito({
   subsets: ["latin"],
+  variable: "--font-nunito",
 });
 
 export const metadata: Metadata = {
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} antialiased`}>
+      <body className={cn(nunito.variable, "font-sans antialiased")}>
         {children}
         <Toaster />
       </body>

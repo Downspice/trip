@@ -164,8 +164,18 @@ export default function HomePage() {
         </section>
 
         {/* Features Section */}
-        <section className="py-24 bg-secondary/5">
-          <div className="container mx-auto px-6">
+        <section 
+          className="relative py-24 overflow-hidden"
+        >
+          {/* Faded background image */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-15"
+            style={{ backgroundImage: "url('/hero-students.png')" }}
+          ></div>
+          {/* Cream base color over image */}
+          <div className="absolute inset-0 bg-secondary/5"></div>
+          
+          <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold tracking-tight mb-4">Why Schools Choose TRIIP</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
@@ -268,22 +278,23 @@ export default function HomePage() {
             © 2026 School Trip Logistics. All rights reserved.
           </p>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm font-semibold text-muted-foreground">
-            <span className="text-muted-foreground">Contact:</span>
+            <span className="text-muted-foregroundd">Need help? Contact:</span>
             <a  
               href="https://wa.me/233245605933"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
             >
-              St. Rose: +233 24 560 5933
+            +233 24 560 5933
             </a>
+            /
             <a
               href="https://wa.me/233536822899"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
             >
-              St. Augustine: +233 53 682 2899
+               +233 53 682 2899
             </a>
           </div>
         </div>

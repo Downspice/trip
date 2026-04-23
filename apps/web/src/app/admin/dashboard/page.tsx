@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import {
   Loader2, Search, RefreshCw, GraduationCap, Users,
   TrendingUp, CheckCircle2, Clock, XCircle, ArrowLeft, Settings2,
+  Download,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,8 @@ import {
 import { getBookings, getSchools, clearAllBookings, type Booking, type School } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import * as XLSX from 'xlsx';
+
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -193,7 +196,13 @@ export default function AdminDashboardPage() {
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase();
     return bookings.filter((b) => {
-      if (typeFilter !== 'ALL' && b.type !== typeFilter) return false;
+      if (typeFilter === 'GOING_TO_SCHOOL') {
+        if (b.type !== 'STUDENT_TRIP' || b.tripType !== 'ONE_WAY_TO_SCHOOL') return false;
+      } else if (typeFilter === 'COMING_HOME') {
+        if (b.type !== 'STUDENT_TRIP' || b.tripType !== 'ONE_WAY_FROM_SCHOOL') return false;
+      } else if (typeFilter !== 'ALL' && b.type !== typeFilter) {
+        return false;
+      }
       if (statusFilter !== 'ALL' && b.paymentStatus !== statusFilter) return false;
       if (schoolFilter !== 'ALL' && getSchoolName(b) !== schools.find(s => s.id === schoolFilter)?.name) return false;
       if (!q) return true;
@@ -206,6 +215,50 @@ export default function AdminDashboardPage() {
       return terms.some(t => t.toLowerCase().includes(q));
     });
   }, [bookings, typeFilter, statusFilter, schoolFilter, searchQuery, schools]);
+
+  // download excel
+  const handleDownloadExcel = () => {
+  if (filtered.length === 0) {
+    toast({ title: 'No bookings to download', description: 'The current filter returned no results.' });
+    return;
+  }
+
+  const rows = filtered.map((b) => {
+    const isStudent = b.type === 'STUDENT_TRIP';
+    const tripType = b.tripType === 'ONE_WAY_TO_SCHOOL'
+      ? 'Going to School'
+      : b.tripType === 'ONE_WAY_FROM_SCHOOL'
+        ? 'Coming Home'
+        : 'Parent Visit';
+    
+    const details = isStudent
+      ? [b.student?.class, b.student?.house?.name, b.student?.programme?.name].filter(Boolean).join(' · ')
+      : '';
+    
+    return {
+      Date: new Date(b.createdAt).toLocaleDateString('en-GB'),
+      Type: isStudent ? 'Student' : 'Parent Visit',
+      Name: getPersonName(b),
+      Phone: isStudent ? (b.student?.parentContact ?? '') : (b.parentVisit?.parentContact ?? ''),
+      School: getSchoolName(b),
+      Details: details,
+      Route: b.route?.name ?? '',
+      'Trip Type': tripType,
+      Stop: b.stopName ?? b.customDropoff ?? '',
+      Amount: b.price ? formatCurrency(b.price) : '',
+      Status: b.paymentStatus ?? '',
+    };
+  });
+
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Bookings');
+  
+  const today = new Date().toISOString().split('T')[0];
+  XLSX.writeFile(workbook, `bookings-${today}.xlsx`);
+  
+  toast({ title: 'Download started', description: `Exported ${filtered.length} booking(s).` });
+};
 
   return (
     <main className="container mx-auto px-4 py-10 max-w-[1400px]">
@@ -279,7 +332,8 @@ export default function AdminDashboardPage() {
           <SelectTrigger className="w-full sm:w-44"><SelectValue placeholder="All Types" /></SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">All Types</SelectItem>
-            <SelectItem value="STUDENT_TRIP">Student Trip</SelectItem>
+            <SelectItem value="GOING_TO_SCHOOL">Going to School</SelectItem>
+            <SelectItem value="COMING_HOME">Coming Home</SelectItem>
             <SelectItem value="PARENT_VISIT">Parent Visit</SelectItem>
           </SelectContent>
         </Select>
@@ -299,6 +353,14 @@ export default function AdminDashboardPage() {
             <SelectItem value="FAILED">Failed</SelectItem>
           </SelectContent>
         </Select>
+        <Button 
+          onClick={handleDownloadExcel} 
+          variant="outline" 
+          className="w-full sm:w-auto"
+        >
+          <Download className="h-4 w-4 mr-2" />
+          Download Excel
+        </Button>
       </div>
 
       <p className="text-sm text-gray-500 mb-3">

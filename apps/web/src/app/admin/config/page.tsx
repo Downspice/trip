@@ -524,6 +524,7 @@ export default function AdminConfigPage() {
             </Card>
 
             {/* PROGRAMMES */}
+            {false && (
             <Card>
               <CardHeader>
                 <CardTitle>Programmes</CardTitle>
@@ -571,6 +572,7 @@ export default function AdminConfigPage() {
                 )}
               </CardContent>
             </Card>
+            )}
 
             {/* ROUTES */}
             <Card>

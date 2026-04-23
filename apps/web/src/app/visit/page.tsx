@@ -63,6 +63,22 @@ export default function VisitBookingPage() {
     },
   });
 
+  useEffect(() => {
+  const saved = sessionStorage.getItem('visitBookingFormData');
+  if (!saved) return;
+  try {
+    const values = JSON.parse(saved);
+    // Only restore non-cascading fields to avoid conflicts with dropdowns
+    form.setValue('parentName', values.parentName || '');
+    form.setValue('parentContact', values.parentContact || '');
+    form.setValue('email', values.email || '');
+    form.setValue('stopName', values.stopName || '');
+    form.setValue('customDropoff', values.customDropoff || '');
+  } catch {
+    // If parsing fails, just skip restoration
+  }
+}, [form]);
+
   const selectedSchoolId = form.watch('schoolId');
   const selectedRouteId = form.watch('routeId');
   const selectedTripType = form.watch('tripType') as TripType | undefined;

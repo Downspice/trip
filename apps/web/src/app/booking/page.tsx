@@ -51,11 +51,31 @@ export default function BookingPage() {
     register,
     handleSubmit,
     setValue,
+    reset,
     watch,
     formState: { errors },
   } = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
   });
+
+  useEffect(() => {
+  const saved = sessionStorage.getItem('bookingFormData');
+  if (!saved) return;
+  try {
+    const values = JSON.parse(saved);
+    // Only restore non-cascading fields to avoid conflicts with school/route/etc dropdowns
+    setValue('studentName', values.studentName || '');
+    setValue('class', values.class || '');
+    setValue('email', values.email || '');
+    setValue('parentName', values.parentName || '');
+    setValue('parentContact', values.parentContact || '');
+    setValue('tripType', values.tripType);
+    setValue('stopName', values.stopName || '');
+    setValue('customDropoff', values.customDropoff || '');
+  } catch {
+    // If parsing fails, just skip restoration — no harm done
+  }
+}, [setValue]);
 
   const selectedSchoolId = watch('schoolId');
   const selectedRouteId = watch('routeId');
@@ -86,7 +106,7 @@ export default function BookingPage() {
       .then(([h, r, pr]) => {
         setHouses(h); setRoutes(r); setProgrammes(pr);
         setValue('houseId', '');
-        setValue('programmeId', '');
+        setValue('programmeId', pr[0]?.id || '');
         setValue('routeId', '');
         // @ts-ignore
         setValue('tripType', undefined);
@@ -168,8 +188,17 @@ export default function BookingPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="class">Class</Label>
-                    <Input id="class" placeholder="e.g. Form 3A" {...register('class')} />
+                    <Label>Class</Label>
+                    <Select onValueChange={(val) => setValue('class', val)}>
+                      <SelectTrigger id="class">
+                        <SelectValue placeholder="Select your Form" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Form 1">Form 1</SelectItem>
+                        <SelectItem value="Form 2">Form 2</SelectItem>
+                        <SelectItem value="Form 3">Form 3</SelectItem>
+                      </SelectContent>
+                    </Select>
                     {errors.class && <p className="text-sm text-destructive">{errors.class.message}</p>}
                   </div>
 
@@ -186,6 +215,7 @@ export default function BookingPage() {
                     {errors.houseId && <p className="text-sm text-destructive">{errors.houseId.message}</p>}
                   </div>
 
+                  {false && (
                   <div className="space-y-1.5">
                     <Label>Programme of Study</Label>
                     <Select onValueChange={(val) => setValue('programmeId', val)} disabled={loadingOptions}>
@@ -198,6 +228,7 @@ export default function BookingPage() {
                     </Select>
                     {errors.programmeId && <p className="text-sm text-destructive">{errors.programmeId.message}</p>}
                   </div>
+                  )}
 
                   <div className="space-y-1.5">
                     <Label htmlFor="email">Email Address</Label>

@@ -19,9 +19,11 @@ export const bookingFormSchema = z.object({
     .max(100, 'Name is too long'),
   parentContact: z
     .string()
-    .min(10, 'Please enter a valid phone number')
-    .max(15, 'Phone number is too long')
-    .regex(/^[0-9+\-()\s]+$/, 'Please enter a valid phone number'),
+    .transform((val) => val.replace(/[\s+]/g, ''))
+    .refine(
+      (val) => /^\d{10}$/.test(val) || /^233\d{9}$/.test(val),
+      'Please enter a valid Ghana phone number (10 digits, or +233 followed by 9 digits)'
+    ),
   routeId: z.string().min(1, 'Please select a route'),
   tripType: z.enum(['ONE_WAY_TO_SCHOOL', 'ONE_WAY_FROM_SCHOOL'], {
     errorMap: () => ({ message: 'Please select a trip type' }),

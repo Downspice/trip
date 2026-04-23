@@ -216,9 +216,7 @@ export default function BookingsPage() {
                   <TableHead className="font-semibold text-gray-700 whitespace-nowrap">Date</TableHead>
                   <TableHead className="font-semibold text-gray-700">Type</TableHead>
                   <TableHead className="font-semibold text-gray-700">Name</TableHead>
-                  <TableHead className="font-semibold text-gray-700">School</TableHead>
                   <TableHead className="font-semibold text-gray-700">Details</TableHead>
-                  <TableHead className="font-semibold text-gray-700">Route</TableHead>
                   <TableHead className="font-semibold text-gray-700">Trip Type</TableHead>
                   <TableHead className="font-semibold text-gray-700">Stop</TableHead>
                   <TableHead className="font-semibold text-gray-700 text-right">Amount</TableHead>
@@ -254,8 +252,7 @@ export default function BookingsPage() {
                       </div>
                     </TableCell>
 
-                    {/* School */}
-                    <TableCell className="text-gray-700 font-medium text-sm">{getBookingSchoolName(b)}</TableCell>
+                    
 
                     {/* Student-specific details */}
                     <TableCell>
@@ -267,12 +264,6 @@ export default function BookingsPage() {
                       ) : (
                         <span className="text-xs text-gray-400 italic">—</span>
                       )}
-                    </TableCell>
-
-                    {/* Route */}
-                    <TableCell>
-                      <div className="text-sm text-gray-800 font-medium">{b.route?.name ?? <span className="text-gray-400">—</span>}</div>
-                      <div className="text-xs text-gray-400 font-mono">{b.paymentReference ?? 'N/A'}</div>
                     </TableCell>
 
                     {/* Trip Type */}

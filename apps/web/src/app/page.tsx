@@ -66,8 +66,11 @@ export default function HomePage() {
             <div className="text-2xl font-black tracking-tighter text-foreground">
               TRIIP
             </div>
+            <Badge variant="secondary" className="hidden md:inline-flex ml-3 px-3 py-1 text-xs font-semibold rounded-full">
+              The Future of School Logistics
+            </Badge>
           </div>
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="flex items-center gap-4">
             <Link href="/bookings" className="group">
               <Button variant="outline" className="rounded-full px-6 border-secondary/20 hover:bg-secondary hover:text-secondary-foreground transition-all duration-300">
                 Manage Bookings
@@ -90,7 +93,7 @@ export default function HomePage() {
               className="relative h-full w-full"
             >
               <Image 
-                src="/hero-bg.png" 
+                src="/hero-bus.jpeg" 
                 alt="School Trip Journey" 
                 fill 
                 className="object-cover"
@@ -101,18 +104,9 @@ export default function HomePage() {
 
           <div className="container mx-auto px-6 relative z-20">
             <div className="max-w-3xl">
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-semibold rounded-full border-primary/20 bg-primary/10 text-primary">
-                  The Future of School Logistics
-                </Badge>
-              </motion.div>
 
               <motion.h1 
-                className="text-7xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-6 text-foreground"
+                className="text-5xl sm:text-6xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-6 text-foreground"
               >
                 <span className="block">{displayText}</span>
                 <AnimatePresence>
@@ -134,7 +128,7 @@ export default function HomePage() {
                   transition={{ delay: 0.8, duration: 0.8 }}
                   className="block text-secondary mt-2"
                 >
-                  Unforgettable <br /> Journeys.
+                  Unforgettable <br /> Journeys
                 </motion.span>
               </motion.h1>
 
@@ -145,7 +139,7 @@ export default function HomePage() {
                 className="text-xl text-muted-foreground mb-10 max-w-xl leading-relaxed"
               >
                 Simplify school trip planning with our all-in-one platform. 
-                From student seat bookings to parent visitations, we've got you covered.
+                From student(s) to parent visitations, we've got you covered.
               </motion.p>
 
               <motion.div 
@@ -156,12 +150,12 @@ export default function HomePage() {
               >
                 <Link href="/booking">
                   <Button size="lg" className="h-14 px-10 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 hover:scale-105 transition-transform active:scale-95 bg-primary hover:bg-primary/90">
-                    Student Booking <ArrowRight className="ml-2 w-5 h-5" />
+                    Booking for Student <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </Link>
                 <Link href="/visit">
                   <Button size="lg" variant="outline" className="h-14 px-10 rounded-2xl text-lg font-bold border-2 hover:bg-secondary hover:text-secondary-foreground transition-all duration-300">
-                    Book Parent Visit
+                    Booking for Parent
                   </Button>
                 </Link>
               </motion.div>
@@ -175,7 +169,7 @@ export default function HomePage() {
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold tracking-tight mb-4">Why Schools Choose TRIIP</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Built specifically for modern educational institutions to handle the complex logistics of school outings.
+                Designed for today's educational institutions to efficiently manage student transportation logistics.
               </p>
             </div>
 
@@ -273,10 +267,24 @@ export default function HomePage() {
           <p className="text-muted-foreground text-sm">
             © 2026 School Trip Logistics. All rights reserved.
           </p>
-          <div className="flex gap-6 text-sm font-semibold text-muted-foreground">
-            <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Contact</Link>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm font-semibold text-muted-foreground">
+            <span className="text-muted-foreground">Contact:</span>
+            <a  
+              href="https://wa.me/233245605933"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              St. Rose: +233 24 560 5933
+            </a>
+            <a
+              href="https://wa.me/233536822899"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              St. Augustine: +233 53 682 2899
+            </a>
           </div>
         </div>
       </footer>

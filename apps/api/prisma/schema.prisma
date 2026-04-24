@@ -70,8 +70,8 @@ model Student {
   email           String
   parentName      String
   parentContact   String
-  whatsappContact String?
   createdAt       DateTime  @default(now())
+  whatsappContact String?
   bookings        Booking[]
   house           House     @relation(fields: [houseId], references: [id])
   programme       Programme @relation(fields: [programmeId], references: [id])
@@ -89,15 +89,15 @@ model School {
 }
 
 model ParentVisit {
-  id            String    @id @default(cuid())
-  parentName    String
-  parentContact String
+  id              String    @id @default(cuid())
+  parentName      String
+  parentContact   String
+  email           String
+  schoolId        String
+  createdAt       DateTime  @default(now())
   whatsappContact String?
-  email         String
-  schoolId      String
-  createdAt     DateTime  @default(now())
-  bookings      Booking[]
-  school        School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  bookings        Booking[]
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 }
 
 model Booking {

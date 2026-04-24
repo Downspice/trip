@@ -11,6 +11,7 @@ export const visitBookingFormSchema = z.object({
   }),
   stopName: z.string().optional(),
   customDropoff: z.string().optional(),
+  whatsappContact: z.string().regex(/^\+?[0-9\s-]{10,15}$/, { message: 'Enter a valid phone number.' }),
 });
 
 export type VisitBookingFormValues = z.infer<typeof visitBookingFormSchema>;

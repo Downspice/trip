@@ -40,6 +40,7 @@ export interface BookingPreview {
   email: string;
   parentName: string;
   parentContact: string;
+  whatsappContact?: string;
   house?: House;
   programme?: Programme;
   school?: School;
@@ -59,6 +60,7 @@ export interface BookingFormData {
   email: string;
   parentName: string;
   parentContact: string;
+  whatsappContact: string;
   routeId: string;
   tripType: TripType;
   stopName?: string;
@@ -74,6 +76,7 @@ export interface VisitBookingFormData {
   tripType: TripType;
   stopName?: string;
   customDropoff?: string;
+  whatsappContact: string;
 }
 
 export interface PaymentInitResponse {
@@ -100,6 +103,7 @@ export interface Booking {
     class: string;
     parentName: string;
     parentContact: string;
+    whatsappContact: string;
     school: School;
     house: House;
     programme: Programme;
@@ -107,6 +111,7 @@ export interface Booking {
   parentVisit?: {
     parentName: string;
     parentContact: string;
+    whatsappContact: string;
     email: string;
     school: School;
   };

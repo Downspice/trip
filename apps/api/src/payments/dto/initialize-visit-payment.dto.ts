@@ -10,6 +10,10 @@ export class InitializeVisitPaymentDto {
   @IsNotEmpty()
   parentContact: string;
 
+  @IsString()
+  @IsNotEmpty()
+  whatsappContact: string;
+
   @IsEmail()
   email: string;
 

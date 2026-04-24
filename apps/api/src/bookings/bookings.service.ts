@@ -13,7 +13,7 @@ function getPriceFromRoute(route: { priceToSchool: number; priceFromSchool: numb
 
 @Injectable()
 export class BookingsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   /**
    * Returns a price preview without persisting anything yet.
@@ -40,6 +40,7 @@ export class BookingsService {
       email: dto.email,
       parentName: dto.parentName,
       parentContact: dto.parentContact,
+      whatsappContact: dto.whatsappContact,
       school: { id: school.id, name: school.name },
       house: { id: house.id, name: house.name },
       programme: { id: programme.id, name: programme.name },
@@ -66,6 +67,7 @@ export class BookingsService {
     return {
       parentName: dto.parentName,
       parentContact: dto.parentContact,
+      whatsappContact: dto.whatsappContact,
       email: dto.email,
       school: { id: school.id, name: school.name },
       route: { id: route.id, name: route.name, stops: route.stops },

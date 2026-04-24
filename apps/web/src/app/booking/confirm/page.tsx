@@ -66,105 +66,107 @@ export default function ConfirmPage() {
   }
 
   return (
-  <div className="relative min-h-screen overflow-hidden">
-    {/* Faded background image */}
-    <div 
-      className="absolute inset-0 bg-cover bg-center opacity-15"
-      style={{ backgroundImage: "url('/hero-students.png')" }}
-    ></div>
-    {/* Cream base color over image */}
-    <div className="absolute inset-0 bg-secondary/5"></div>
-    
-    <main className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Confirm Your Booking</h1>
-        <p className="text-gray-500">Please review your details before payment</p>
-      </div>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Faded background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-15"
+        style={{ backgroundImage: "url('/hero-students.png')" }}
+      ></div>
+      {/* Cream base color over image */}
+      <div className="absolute inset-0 bg-secondary/5"></div>
 
-      <Card className="shadow-lg border-0 mb-6">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <GraduationCap className="h-5 w-5 text-blue-600" />
-            Student Details
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <InfoRow label="Student Name" value={preview.studentName || 'N/A'} />
-          <Separator />
-          <InfoRow label="Class" value={preview.class || 'N/A'} />
-          <Separator />
-          <InfoRow label="House" value={preview.house?.name || 'N/A'} />
-          <Separator />
-          <InfoRow label="Programme" value={preview.programme?.name || 'N/A'} />
-          <Separator />
-          <InfoRow label="Email" value={preview.email} />
-          <Separator />
-          <InfoRow label="Parent / Guardian" value={preview.parentName} />
-          <Separator />
-          <InfoRow label="Parent Contact" value={preview.parentContact} />
-        </CardContent>
-      </Card>
+      <main className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Confirm Your Booking</h1>
+          <p className="text-gray-500">Please review your details before payment</p>
+        </div>
 
-      <Card className="shadow-lg border-0 mb-6 bg-blue-50 border-blue-100">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-blue-600" />
-            Route & Payment
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <InfoRow label="Route" value={preview.route?.name ?? 'N/A'} />
-          <Separator />
-          <InfoRow
-            label="Trip Type"
-            value={
-              preview.tripType === 'ONE_WAY_TO_SCHOOL' ? 'To School'
-              : preview.tripType === 'ONE_WAY_FROM_SCHOOL' ? 'From School'
-              : 'N/A'
-            }
-          />
-          <Separator />
-          {(preview.stopName || preview.customDropoff) && (
-            <>
-              <InfoRow
-                label={preview.customDropoff ? 'Custom Drop-off' : 'Pickup / Drop-off Stop'}
-                value={preview.customDropoff ?? preview.stopName ?? 'N/A'}
-              />
-              <Separator />
-            </>
-          )}
-          <div className="flex justify-between items-center py-3">
-            <span className="text-base font-semibold text-gray-900">Total Amount</span>
-            <span className="text-2xl font-bold text-blue-600">
-              {formatCurrency(preview.price)}
-            </span>
-          </div>
-        </CardContent>
-      </Card>
+        <Card className="shadow-lg border-0 mb-6">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <GraduationCap className="h-5 w-5 text-blue-600" />
+              Student Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <InfoRow label="Student Name" value={preview.studentName || 'N/A'} />
+            <Separator />
+            <InfoRow label="Class" value={preview.class || 'N/A'} />
+            <Separator />
+            <InfoRow label="House" value={preview.house?.name || 'N/A'} />
+            <Separator />
+            <InfoRow label="Programme" value={preview.programme?.name || 'N/A'} />
+            <Separator />
+            <InfoRow label="Email" value={preview.email} />
+            <Separator />
+            <InfoRow label="Parent / Guardian" value={preview.parentName} />
+            <Separator />
+            <InfoRow label="Parent Contact" value={preview.parentContact} />
+            <Separator />
+            <InfoRow label="Parent Whatsapp Contact" value={preview.whatsappContact ?? "N/A"} />
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg border-0 mb-6 bg-blue-50 border-blue-100">
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-blue-600" />
+              Route & Payment
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <InfoRow label="Route" value={preview.route?.name ?? 'N/A'} />
+            <Separator />
+            <InfoRow
+              label="Trip Type"
+              value={
+                preview.tripType === 'ONE_WAY_TO_SCHOOL' ? 'To School'
+                  : preview.tripType === 'ONE_WAY_FROM_SCHOOL' ? 'From School'
+                    : 'N/A'
+              }
+            />
+            <Separator />
+            {(preview.stopName || preview.customDropoff) && (
+              <>
+                <InfoRow
+                  label={preview.customDropoff ? 'Custom Drop-off' : 'Pickup / Drop-off Stop'}
+                  value={preview.customDropoff ?? preview.stopName ?? 'N/A'}
+                />
+                <Separator />
+              </>
+            )}
+            <div className="flex justify-between items-center py-3">
+              <span className="text-base font-semibold text-gray-900">Total Amount</span>
+              <span className="text-2xl font-bold text-blue-600">
+                {formatCurrency(preview.price)}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
 
 
-      <div className="flex flex-col gap-3">
-        <Button size="lg" onClick={handleConfirmAndPay} disabled={paying} className="w-full">
-          {paying ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Redirecting to Payment...
-            </>
-          ) : (
-            `Confirm & Pay ${formatCurrency(preview.price)}`
-          )}
-        </Button>
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={() => router.back()}
-          disabled={paying}
-          className="w-full"
-        >
-          Go Back &amp; Edit
-        </Button>
-      </div>
-    </main>
-  </div>  
+        <div className="flex flex-col gap-3">
+          <Button size="lg" onClick={handleConfirmAndPay} disabled={paying} className="w-full">
+            {paying ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Redirecting to Payment...
+              </>
+            ) : (
+              `Confirm & Pay ${formatCurrency(preview.price)}`
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => router.back()}
+            disabled={paying}
+            className="w-full"
+          >
+            Go Back &amp; Edit
+          </Button>
+        </div>
+      </main>
+    </div>
   );
 }

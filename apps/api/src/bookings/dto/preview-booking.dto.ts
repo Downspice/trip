@@ -51,5 +51,8 @@ export class PreviewBookingDto {
   @IsString()
   @IsOptional()
   customDropoff?: string;
-}
 
+  @IsString()
+  @IsNotEmpty()
+  whatsappContact: string;
+}

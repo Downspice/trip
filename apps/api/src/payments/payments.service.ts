@@ -31,7 +31,7 @@ export class PaymentsService {
     private prisma: PrismaService,
     private paystackService: PaystackService,
     private configService: ConfigService,
-  ) {}
+  ) { }
 
   async initialize(dto: InitializePaymentDto) {
     const [school, route, house, programme] = await Promise.all([
@@ -61,6 +61,7 @@ export class PaymentsService {
         email: dto.email,
         parentName: dto.parentName,
         parentContact: dto.parentContact,
+        whatsappContact: dto.whatsappContact,
       },
     });
 
@@ -115,6 +116,7 @@ export class PaymentsService {
       data: {
         parentName: dto.parentName,
         parentContact: dto.parentContact,
+        whatsappContact: dto.whatsappContact,
         email: dto.email,
         schoolId: dto.schoolId,
       },

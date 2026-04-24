@@ -95,7 +95,7 @@ export default function BookingsPage() {
       } else if (typeFilter === 'COMING_HOME') {
         if (b.type !== 'STUDENT_TRIP' || b.tripType !== 'ONE_WAY_FROM_SCHOOL') return false;
       } else if (typeFilter !== 'ALL' && b.type !== typeFilter) {
-      return false;
+        return false;
       }
 
       // School filter
@@ -256,12 +256,15 @@ export default function BookingsPage() {
                     {/* Person name + contact */}
                     <TableCell>
                       <div className="font-medium text-gray-900">{getBookingPersonName(b)}</div>
-                      <div className="text-xs text-gray-400">
-                        {b.type === 'STUDENT_TRIP' ? b.student?.parentContact : b.parentVisit?.parentContact}
+                      <div className="text-xs text-gray-500">
+                        Phone: {b.type === 'STUDENT_TRIP' ? b.student?.parentContact : b.parentVisit?.parentContact}
+                      </div>
+                      <div className="text-xs text-green-600 font-medium">
+                        Whatsapp: {b.type === 'STUDENT_TRIP' ? b.student?.whatsappContact : b.parentVisit?.whatsappContact}
                       </div>
                     </TableCell>
 
-                    
+
 
                     {/* Student-specific details */}
                     <TableCell>
@@ -280,7 +283,7 @@ export default function BookingsPage() {
                       {b.tripType ? (
                         <Badge variant="outline" className={
                           b.tripType === 'ONE_WAY_TO_SCHOOL' ? 'border-green-200 text-green-700 bg-green-50 text-xs' :
-                          'border-amber-200 text-amber-700 bg-amber-50 text-xs'
+                            'border-amber-200 text-amber-700 bg-amber-50 text-xs'
                         }>{TRIP_TYPE_LABELS[b.tripType]}</Badge>
                       ) : <span className="text-gray-400 text-xs">—</span>}
                     </TableCell>

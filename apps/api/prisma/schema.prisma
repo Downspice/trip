@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
@@ -9,11 +6,6 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-enum AdminRole {
-  SUPER_ADMIN
-  ADMIN
 }
 
 model Admin {
@@ -27,21 +19,21 @@ model Admin {
 }
 
 model House {
-  id        String    @id @default(cuid())
-  name      String
-  schoolId  String
-  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  students  Student[]
+  id       String    @id @default(cuid())
+  name     String
+  schoolId String
+  school   School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  students Student[]
 
   @@unique([name, schoolId])
 }
 
 model Programme {
-  id        String    @id @default(cuid())
-  name      String
-  schoolId  String
-  school    School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  students  Student[]
+  id       String    @id @default(cuid())
+  name     String
+  schoolId String
+  school   School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  students Student[]
 
   @@unique([name, schoolId])
 }
@@ -52,9 +44,9 @@ model Route {
   schoolId        String
   priceToSchool   Float
   priceFromSchool Float
+  bookings        Booking[]
   school          School      @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   stops           RouteStop[]
-  bookings        Booking[]
 
   @@unique([name, schoolId])
 }
@@ -69,27 +61,28 @@ model RouteStop {
 }
 
 model Student {
-  id            String    @id @default(cuid())
-  studentName   String
-  class         String
-  schoolId      String
-  houseId       String
-  programmeId   String
-  email         String
-  parentName    String
-  parentContact String
-  createdAt     DateTime  @default(now())
-  school        School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  house         House     @relation(fields: [houseId], references: [id])
-  programme     Programme @relation(fields: [programmeId], references: [id])
-  bookings      Booking[]
+  id              String    @id @default(cuid())
+  studentName     String
+  class           String
+  schoolId        String
+  houseId         String
+  programmeId     String
+  email           String
+  parentName      String
+  parentContact   String
+  whatsappContact String?
+  createdAt       DateTime  @default(now())
+  bookings        Booking[]
+  house           House     @relation(fields: [houseId], references: [id])
+  programme       Programme @relation(fields: [programmeId], references: [id])
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 }
 
 model School {
   id           String        @id @default(cuid())
   name         String        @unique
-  parentVisits ParentVisit[]
   houses       House[]
+  parentVisits ParentVisit[]
   programmes   Programme[]
   routes       Route[]
   students     Student[]
@@ -99,11 +92,36 @@ model ParentVisit {
   id            String    @id @default(cuid())
   parentName    String
   parentContact String
+  whatsappContact String?
   email         String
   schoolId      String
   createdAt     DateTime  @default(now())
-  school        School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
   bookings      Booking[]
+  school        School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+  id               String        @id @default(cuid())
+  studentId        String?
+  parentVisitId    String?
+  routeId          String?
+  tripType         TripType?     @default(ONE_WAY_TO_SCHOOL)
+  stopName         String?
+  customDropoff    String?
+  price            Float
+  paymentReference String?       @unique
+  paymentStatus    PaymentStatus @default(PENDING)
+  type             BookingType   @default(STUDENT_TRIP)
+  createdAt        DateTime      @default(now())
+  userId           String?
+  parentVisit      ParentVisit?  @relation(fields: [parentVisitId], references: [id], onDelete: Cascade)
+  route            Route?        @relation(fields: [routeId], references: [id])
+  student          Student?      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
 }
 
 enum PaymentStatus {
@@ -120,23 +138,4 @@ enum BookingType {
 enum TripType {
   ONE_WAY_TO_SCHOOL
   ONE_WAY_FROM_SCHOOL
-}
-
-model Booking {
-  id               String        @id @default(cuid())
-  studentId        String?
-  parentVisitId    String?
-  userId           String?
-  routeId          String?
-  tripType         TripType?     @default(ONE_WAY_TO_SCHOOL)
-  stopName         String?       // the chosen route stop
-  customDropoff    String?       // free-text if stop not in list
-  price            Float
-  paymentReference String?       @unique
-  paymentStatus    PaymentStatus @default(PENDING)
-  type             BookingType   @default(STUDENT_TRIP)
-  createdAt        DateTime      @default(now())
-  student          Student?      @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  parentVisit      ParentVisit?  @relation(fields: [parentVisitId], references: [id], onDelete: Cascade)
-  route            Route?        @relation(fields: [routeId], references: [id])
 }

@@ -35,6 +35,10 @@ export class InitializePaymentDto {
 
   @IsString()
   @IsNotEmpty()
+  whatsappContact: string;
+
+  @IsString()
+  @IsNotEmpty()
   routeId: string;
 
   @IsEnum(TripType)

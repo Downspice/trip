@@ -42,10 +42,10 @@ function getPersonName(b: Booking) {
 
 function StatusBadge({ status }: { status: Booking['paymentStatus'] }) {
   switch (status) {
-    case 'SUCCESS':  return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Paid</Badge>;
-    case 'PENDING':  return <Badge variant="outline" className="text-yellow-700 border-yellow-300 bg-yellow-50">Pending</Badge>;
-    case 'FAILED':   return <Badge variant="destructive">Failed</Badge>;
-    default:         return <Badge variant="outline">{status}</Badge>;
+    case 'SUCCESS': return <Badge className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200">Paid</Badge>;
+    case 'PENDING': return <Badge variant="outline" className="text-yellow-700 border-yellow-300 bg-yellow-50">Pending</Badge>;
+    case 'FAILED': return <Badge variant="destructive">Failed</Badge>;
+    default: return <Badge variant="outline">{status}</Badge>;
   }
 }
 
@@ -218,47 +218,48 @@ export default function AdminDashboardPage() {
 
   // download excel
   const handleDownloadExcel = () => {
-  if (filtered.length === 0) {
-    toast({ title: 'No bookings to download', description: 'The current filter returned no results.' });
-    return;
-  }
+    if (filtered.length === 0) {
+      toast({ title: 'No bookings to download', description: 'The current filter returned no results.' });
+      return;
+    }
 
-  const rows = filtered.map((b) => {
-    const isStudent = b.type === 'STUDENT_TRIP';
-    const tripType = b.tripType === 'ONE_WAY_TO_SCHOOL'
-      ? 'Going to School'
-      : b.tripType === 'ONE_WAY_FROM_SCHOOL'
-        ? 'Coming Home'
-        : 'Parent Visit';
-    
-    const details = isStudent
-      ? [b.student?.class, b.student?.house?.name, b.student?.programme?.name].filter(Boolean).join(' · ')
-      : '';
-    
-    return {
-      Date: new Date(b.createdAt).toLocaleDateString('en-GB'),
-      Type: isStudent ? 'Student' : 'Parent Visit',
-      Name: getPersonName(b),
-      Phone: isStudent ? (b.student?.parentContact ?? '') : (b.parentVisit?.parentContact ?? ''),
-      School: getSchoolName(b),
-      Details: details,
-      Route: b.route?.name ?? '',
-      'Trip Type': tripType,
-      Stop: b.stopName ?? b.customDropoff ?? '',
-      Amount: b.price ? formatCurrency(b.price) : '',
-      Status: b.paymentStatus ?? '',
-    };
-  });
+    const rows = filtered.map((b) => {
+      const isStudent = b.type === 'STUDENT_TRIP';
+      const tripType = b.tripType === 'ONE_WAY_TO_SCHOOL'
+        ? 'Going to School'
+        : b.tripType === 'ONE_WAY_FROM_SCHOOL'
+          ? 'Coming Home'
+          : 'Parent Visit';
 
-  const worksheet = XLSX.utils.json_to_sheet(rows);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Bookings');
-  
-  const today = new Date().toISOString().split('T')[0];
-  XLSX.writeFile(workbook, `bookings-${today}.xlsx`);
-  
-  toast({ title: 'Download started', description: `Exported ${filtered.length} booking(s).` });
-};
+      const details = isStudent
+        ? [b.student?.class, b.student?.house?.name, b.student?.programme?.name].filter(Boolean).join(' · ')
+        : '';
+
+      return {
+        Date: new Date(b.createdAt).toLocaleDateString('en-GB'),
+        Type: isStudent ? 'Student' : 'Parent Visit',
+        Name: getPersonName(b),
+        Phone: isStudent ? (b.student?.parentContact ?? '') : (b.parentVisit?.parentContact ?? ''),
+        WhatsApp: isStudent ? (b.student?.whatsappContact ?? '') : (b.parentVisit?.whatsappContact ?? ''),
+        School: getSchoolName(b),
+        Details: details,
+        Route: b.route?.name ?? '',
+        'Trip Type': tripType,
+        Stop: b.stopName ?? b.customDropoff ?? '',
+        Amount: b.price ? formatCurrency(b.price) : '',
+        Status: b.paymentStatus ?? '',
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Bookings');
+
+    const today = new Date().toISOString().split('T')[0];
+    XLSX.writeFile(workbook, `bookings-${today}.xlsx`);
+
+    toast({ title: 'Download started', description: `Exported ${filtered.length} booking(s).` });
+  };
 
   return (
     <main className="container mx-auto px-4 py-10 max-w-[1400px]">
@@ -353,9 +354,9 @@ export default function AdminDashboardPage() {
             <SelectItem value="FAILED">Failed</SelectItem>
           </SelectContent>
         </Select>
-        <Button 
-          onClick={handleDownloadExcel} 
-          variant="outline" 
+        <Button
+          onClick={handleDownloadExcel}
+          variant="outline"
           className="w-full sm:w-auto"
         >
           <Download className="h-4 w-4 mr-2" />
@@ -409,7 +410,12 @@ export default function AdminDashboardPage() {
                     </TableCell>
                     <TableCell>
                       <div className="font-medium text-gray-900">{getPersonName(b)}</div>
-                      <div className="text-xs text-gray-400">{b.type === 'STUDENT_TRIP' ? b.student?.parentContact : b.parentVisit?.parentContact}</div>
+                      <div className="text-xs text-gray-500">
+                        Personal: {b.type === 'STUDENT_TRIP' ? b.student?.parentContact : b.parentVisit?.parentContact}
+                      </div>
+                      <div className="text-xs text-green-600 font-medium">
+                        Whatsapp: {b.type === 'STUDENT_TRIP' ? b.student?.whatsappContact : b.parentVisit?.whatsappContact}
+                      </div>
                     </TableCell>
                     <TableCell className="text-gray-700 font-medium text-sm">{getSchoolName(b)}</TableCell>
                     <TableCell>
@@ -428,7 +434,7 @@ export default function AdminDashboardPage() {
                       {b.tripType ? (
                         <Badge variant="outline" className={
                           b.tripType === 'ONE_WAY_TO_SCHOOL' ? 'border-green-200 text-green-700 bg-green-50 text-xs' :
-                          'border-amber-200 text-amber-700 bg-amber-50 text-xs'
+                            'border-amber-200 text-amber-700 bg-amber-50 text-xs'
                         }>{TRIP_TYPE_LABELS[b.tripType]}</Badge>
                       ) : <span className="text-gray-400 text-xs">—</span>}
                     </TableCell>
@@ -436,8 +442,8 @@ export default function AdminDashboardPage() {
                       {b.customDropoff
                         ? <div><div className="text-xs text-gray-700 truncate">{b.customDropoff}</div><div className="text-[10px] text-gray-400">Custom</div></div>
                         : b.stopName
-                        ? <div className="text-xs text-gray-700 truncate">{b.stopName}</div>
-                        : <span className="text-gray-400 text-xs">—</span>}
+                          ? <div className="text-xs text-gray-700 truncate">{b.stopName}</div>
+                          : <span className="text-gray-400 text-xs">—</span>}
                     </TableCell>
                     <TableCell className="text-right font-semibold text-gray-900 whitespace-nowrap">{formatCurrency(b.price)}</TableCell>
                     <TableCell><StatusBadge status={b.paymentStatus} /></TableCell>

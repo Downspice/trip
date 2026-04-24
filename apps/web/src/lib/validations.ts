@@ -30,6 +30,12 @@ export const bookingFormSchema = z.object({
   }),
   stopName: z.string().optional(),
   customDropoff: z.string().optional(),
+  whatsappContact: z.string()
+    .optional()
+    .refine(
+      (val) => !val || /^\d{10}$/.test(val.replace(/\s+/g, '')) || /^233\d{9}$/.test(val.replace(/\s+/g, '')),
+      'Please enter a valid Ghana phone number if provided'
+    ),
 });
 
 export type BookingFormValues = z.infer<typeof bookingFormSchema>;

@@ -60,6 +60,7 @@ export default function VisitBookingPage() {
       routeId: '',
       stopName: '',
       customDropoff: '',
+      whatsappContact: '',
     },
   });
 
@@ -74,6 +75,7 @@ export default function VisitBookingPage() {
     form.setValue('email', values.email || '');
     form.setValue('stopName', values.stopName || '');
     form.setValue('customDropoff', values.customDropoff || '');
+    form.setValue('whatsappContact', values.whatsappContact || '');
   } catch {
     // If parsing fails, just skip restoration
   }
@@ -176,6 +178,13 @@ export default function VisitBookingPage() {
                   <Input id="parentContact" placeholder="024xxxxxxx" {...form.register('parentContact')} />
                   {form.formState.errors.parentContact && (
                     <p className="text-sm text-red-500">{form.formState.errors.parentContact.message}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappContact">Whatsapp Contact</Label>
+                  <Input id="whatsappContact" placeholder="024xxxxxxx" {...form.register('whatsappContact')} />
+                  {form.formState.errors.whatsappContact && (
+                    <p className="text-sm text-red-500">{form.formState.errors.whatsappContact.message}</p>
                   )}
                 </div>
               </div>

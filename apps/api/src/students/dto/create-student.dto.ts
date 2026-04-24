@@ -33,5 +33,6 @@ export class CreateStudentDto {
   parentContact: string;
 
   @IsString()
+  @IsNotEmpty()
   whatsappContact: string;
 }

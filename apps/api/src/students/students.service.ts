@@ -6,7 +6,7 @@ import { CreateStudentDto } from './dto/create-student.dto';
 export class StudentsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(dto: CreateStudentDto) {
+  async create(dto: any) {
     return this.prisma.student.create({
       data: dto,
       include: { house: true, programme: true },

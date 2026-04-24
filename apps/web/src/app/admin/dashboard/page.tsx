@@ -27,10 +27,6 @@ import * as XLSX from 'xlsx';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const [dateFilter, setDateFilter] = useState<'ALL' | 'TODAY' | 'WEEK' | 'MONTH' | 'CUSTOM'>('ALL');
-const [customStart, setCustomStart] = useState<string>('');
-const [customEnd, setCustomEnd] = useState<string>('');
-
 const TRIP_TYPE_LABELS: Record<string, string> = {
   ONE_WAY_TO_SCHOOL: '→ To School',
   ONE_WAY_FROM_SCHOOL: '← From School',
@@ -146,9 +142,12 @@ export default function AdminDashboardPage() {
   const [schools, setSchools] = useState<School[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<'ALL' | 'STUDENT_TRIP' | 'PARENT_VISIT'>('ALL');
+  const [typeFilter, setTypeFilter] = useState<'ALL' | 'STUDENT_TRIP' | 'PARENT_VISIT' | 'GOING_TO_SCHOOL' | 'COMING_HOME'>('ALL');
   const [schoolFilter, setSchoolFilter] = useState<string>('ALL');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'SUCCESS' | 'PENDING' | 'FAILED'>('ALL');
+  const [dateFilter, setDateFilter] = useState<'ALL' | 'TODAY' | 'WEEK' | 'MONTH' | 'CUSTOM'>('ALL');
+  const [customStart, setCustomStart] = useState<string>('');
+  const [customEnd, setCustomEnd] = useState<string>('');
 
   const [clearOpen, setClearOpen] = useState(false);
   const [clearing, setClearing] = useState(false);
@@ -247,7 +246,7 @@ export default function AdminDashboardPage() {
       ];
       return terms.some(t => t.toLowerCase().includes(q));
     });
-  }, [bookings, typeFilter, statusFilter, schoolFilter, searchQuery, schools]);
+  }, [bookings, typeFilter, statusFilter, schoolFilter, searchQuery, schools, dateFilter, customStart, customEnd]);
 
   // download excel
   const handleDownloadExcel = () => {

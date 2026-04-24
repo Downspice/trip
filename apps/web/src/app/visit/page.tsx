@@ -115,6 +115,17 @@ export default function VisitBookingPage() {
     setUseCustomDropoff(false);
   }, [selectedSchoolId]);
 
+  const onFormError = (errors: any) => {
+    const firstError = Object.values(errors)[0] as any;
+    if (firstError) {
+      toast({
+        variant: 'destructive',
+        title: 'Form Error',
+        description: firstError.message,
+      });
+    }
+  };
+
   const onSubmit = async (data: VisitBookingFormValues) => {
     setSubmitting(true);
     try {
@@ -160,7 +171,7 @@ export default function VisitBookingPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit, onFormError)} className="space-y-6">
 
             {/* ── Step 1: Parent Details ── */}
             <div className="space-y-4">

@@ -120,6 +120,17 @@ export default function BookingPage() {
       .finally(() => setLoadingOptions(false));
   }, [selectedSchoolId, setValue, toast]);
 
+  const onFormError = (errors: any) => {
+    const firstError = Object.values(errors)[0] as any;
+    if (firstError) {
+      toast({
+        variant: 'destructive',
+        title: 'Form Error',
+        description: firstError.message,
+      });
+    }
+  };
+
   const onSubmit = async (values: BookingFormValues) => {
     console.log("formaValues  :", values);
     setSubmitting(true);
@@ -166,7 +177,7 @@ export default function BookingPage() {
             <CardDescription>All fields are required. Select your school first to unlock the rest.</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(onSubmit, onFormError)} className="space-y-6">
               {/* School Selection */}
               <div className="space-y-1.5">
                 <Label className="text-sm font-bold text-secondary uppercase tracking-wider">Step 1: Choose Your School</Label>

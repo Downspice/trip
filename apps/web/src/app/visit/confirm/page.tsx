@@ -57,7 +57,16 @@ export default function VisitConfirmPage() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8 max-w-xl text-left">
+  <div className="relative min-h-screen overflow-hidden">
+    {/* Faded background image */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center opacity-15"
+      style={{ backgroundImage: "url('/hero-students.png')" }}
+    ></div>
+    {/* Cream base color over image */}
+    <div className="absolute inset-0 bg-secondary/5"></div>
+    
+    <main className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
       <Card className="shadow-lg border-t-4 border-t-purple-600">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Confirm Visit Details</CardTitle>
@@ -143,5 +152,6 @@ export default function VisitConfirmPage() {
         </CardFooter>
       </Card>
     </main>
+  </div>
   );
 }

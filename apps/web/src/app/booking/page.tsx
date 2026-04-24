@@ -23,8 +23,8 @@ import type { House, Programme, Route, School, TripType } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
 const TRIP_TYPE_LABELS: Partial<Record<TripType, string>> = {
-  ONE_WAY_TO_SCHOOL: 'One Way (To School)',
-  ONE_WAY_FROM_SCHOOL: 'One Way (From School)',
+  ONE_WAY_TO_SCHOOL: 'Going to School',
+  ONE_WAY_FROM_SCHOOL: 'Coming Home',
 };
 
 function getRoutePrice(route: Route, type: string) {
@@ -142,7 +142,16 @@ export default function BookingPage() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-12 max-w-3xl">
+  <div className="relative min-h-screen overflow-hidden">
+    {/* Faded background image */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center opacity-15"
+      style={{ backgroundImage: "url('/hero-students.png')" }}
+    ></div>
+    {/* Cream base color over image */}
+    <div className="absolute inset-0 bg-secondary/5"></div>
+    
+    <main className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">School Trip Registration</h1>
         <p className="text-gray-500">Fill in your details to register for the school trip</p>
@@ -379,5 +388,6 @@ export default function BookingPage() {
         </CardContent>
       </Card>
     </main>
+  </div>
   );
 }

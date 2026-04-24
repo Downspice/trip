@@ -67,7 +67,7 @@ export default function BookingsPage() {
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<'ALL' | 'STUDENT_TRIP' | 'PARENT_VISIT'>('ALL');
+  const [typeFilter, setTypeFilter] = useState<'ALL' | 'GOING_TO_SCHOOL' | 'COMING_HOME' | 'PARENT_VISIT'>('ALL');const [typeFilter, setTypeFilter] = useState<'ALL' | 'STUDENT_TRIP' | 'PARENT_VISIT'>('ALL');
   const [schoolFilter, setSchoolFilter] = useState<string>('ALL');
 
   const loadData = async () => {
@@ -90,7 +90,13 @@ export default function BookingsPage() {
     const q = searchQuery.toLowerCase();
     return bookings.filter((b) => {
       // Type filter
-      if (typeFilter !== 'ALL' && b.type !== typeFilter) return false;
+      if (typeFilter === 'GOING_TO_SCHOOL') {
+        if (b.type !== 'STUDENT_TRIP' || b.tripType !== 'ONE_WAY_TO_SCHOOL') return false;
+      } else if (typeFilter === 'COMING_HOME') {
+        if (b.type !== 'STUDENT_TRIP' || b.tripType !== 'ONE_WAY_FROM_SCHOOL') return false;
+      } else if (typeFilter !== 'ALL' && b.type !== typeFilter) {
+      return false;
+      }
 
       // School filter
       if (schoolFilter !== 'ALL' && getBookingSchoolName(b) !== schools.find(s => s.id === schoolFilter)?.name) return false;
@@ -166,8 +172,11 @@ export default function BookingsPage() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="ALL">All Types</SelectItem>
-            <SelectItem value="STUDENT_TRIP">
-              <span className="flex items-center gap-2"><GraduationCap className="h-4 w-4 text-blue-600" /> Student Trip</span>
+            <SelectItem value="GOING_TO_SCHOOL">
+              <span className="flex items-center gap-2"><GraduationCap className="h-4 w-4 text-blue-600" />Going to School</span>
+            </SelectItem>
+            <SelectItem value="COMING_HOME">
+              <span className="flex items-center gap-2"><GraduationCap className="h-4 w-4 text-blue-600" />Coming Home</span>
             </SelectItem>
             <SelectItem value="PARENT_VISIT">
               <span className="flex items-center gap-2"><Users className="h-4 w-4 text-purple-600" /> Parent Visit</span>

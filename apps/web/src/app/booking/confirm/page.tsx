@@ -66,7 +66,16 @@ export default function ConfirmPage() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-12 max-w-xl">
+  <div className="relative min-h-screen overflow-hidden">
+    {/* Faded background image */}
+    <div 
+      className="absolute inset-0 bg-cover bg-center opacity-15"
+      style={{ backgroundImage: "url('/hero-students.png')" }}
+    ></div>
+    {/* Cream base color over image */}
+    <div className="absolute inset-0 bg-secondary/5"></div>
+    
+    <main className="container mx-auto px-4 py-12 max-w-3xl relative z-10">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Confirm Your Booking</h1>
         <p className="text-gray-500">Please review your details before payment</p>
@@ -156,5 +165,6 @@ export default function ConfirmPage() {
         </Button>
       </div>
     </main>
+  </div>  
   );
 }

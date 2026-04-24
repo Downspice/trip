@@ -1,0 +1,129 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      AdminRole @default(ADMIN)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model House {
+  id       String    @id @default(cuid())
+  name     String
+  schoolId String
+  school   School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  students Student[]
+
+  @@unique([name, schoolId])
+}
+
+
+model Route {
+  id              String      @id @default(cuid())
+  name            String
+  schoolId        String
+  priceToSchool   Float
+  priceFromSchool Float
+  bookings        Booking[]
+  school          School      @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  stops           RouteStop[]
+
+  @@unique([name, schoolId])
+}
+
+model RouteStop {
+  id      String @id @default(cuid())
+  name    String
+  routeId String
+  route   Route  @relation(fields: [routeId], references: [id], onDelete: Cascade)
+
+  @@unique([name, routeId])
+}
+
+model Student {
+  id              String    @id @default(cuid())
+  studentName     String
+  class           String
+  schoolId        String
+  houseId         String
+  email           String
+  parentName      String
+  parentContact   String
+  createdAt       DateTime  @default(now())
+  whatsappContact String?
+  bookings        Booking[]
+  house           House     @relation(fields: [houseId], references: [id])
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+}
+
+model School {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  houses       House[]
+  parentVisits ParentVisit[]
+  routes       Route[]
+  students     Student[]
+}
+
+model ParentVisit {
+  id              String    @id @default(cuid())
+  parentName      String
+  parentContact   String
+  email           String
+  schoolId        String
+  createdAt       DateTime  @default(now())
+  whatsappContact String?
+  bookings        Booking[]
+  school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+}
+
+model Booking {
+  id               String        @id @default(cuid())
+  studentId        String?
+  parentVisitId    String?
+  routeId          String?
+  tripType         TripType?     @default(ONE_WAY_TO_SCHOOL)
+  stopName         String?
+  customDropoff    String?
+  price            Float
+  paymentReference String?       @unique
+  paymentStatus    PaymentStatus @default(PENDING)
+  type             BookingType   @default(STUDENT_TRIP)
+  createdAt        DateTime      @default(now())
+  userId           String?
+  parentVisit      ParentVisit?  @relation(fields: [parentVisitId], references: [id], onDelete: Cascade)
+  route            Route?        @relation(fields: [routeId], references: [id])
+  student          Student?      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum BookingType {
+  STUDENT_TRIP
+  PARENT_VISIT
+}
+
+enum TripType {
+  ONE_WAY_TO_SCHOOL
+  ONE_WAY_FROM_SCHOOL
+}

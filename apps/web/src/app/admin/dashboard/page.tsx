@@ -27,6 +27,10 @@ import * as XLSX from 'xlsx';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
+const [dateFilter, setDateFilter] = useState<'ALL' | 'TODAY' | 'WEEK' | 'MONTH' | 'CUSTOM'>('ALL');
+const [customStart, setCustomStart] = useState<string>('');
+const [customEnd, setCustomEnd] = useState<string>('');
+
 const TRIP_TYPE_LABELS: Record<string, string> = {
   ONE_WAY_TO_SCHOOL: '→ To School',
   ONE_WAY_FROM_SCHOOL: '← From School',
@@ -203,6 +207,35 @@ export default function AdminDashboardPage() {
       } else if (typeFilter !== 'ALL' && b.type !== typeFilter) {
         return false;
       }
+      // Date filter
+      if (dateFilter !== 'ALL') {
+        const createdAt = new Date(b.createdAt);
+        const now = new Date();
+        
+        if (dateFilter === 'TODAY') {
+          const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          if (createdAt < startOfDay) return false;
+        } else if (dateFilter === 'WEEK') {
+          const weekAgo = new Date(now);
+          weekAgo.setDate(now.getDate() - 7);
+          if (createdAt < weekAgo) return false;
+        } else if (dateFilter === 'MONTH') {
+          const monthAgo = new Date(now);
+          monthAgo.setMonth(now.getMonth() - 1);
+          if (createdAt < monthAgo) return false;
+        } else if (dateFilter === 'CUSTOM') {
+          if (customStart) {
+            const startDate = new Date(customStart);
+            if (createdAt < startDate) return false;
+          }
+          if (customEnd) {
+            const endDate = new Date(customEnd);
+            endDate.setHours(23, 59, 59, 999); // include the full end day
+            if (createdAt > endDate) return false;
+          }
+        }
+      }
+
       if (statusFilter !== 'ALL' && b.paymentStatus !== statusFilter) return false;
       if (schoolFilter !== 'ALL' && getSchoolName(b) !== schools.find(s => s.id === schoolFilter)?.name) return false;
       if (!q) return true;
@@ -354,6 +387,18 @@ export default function AdminDashboardPage() {
             <SelectItem value="FAILED">Failed</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={dateFilter} onValueChange={(v) => setDateFilter(v as typeof dateFilter)}>
+          <SelectTrigger className="w-full sm:w-40">
+            <SelectValue placeholder="All Time" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ALL">All Time</SelectItem>
+            <SelectItem value="TODAY">Today</SelectItem>
+            <SelectItem value="WEEK">Last 7 Days</SelectItem>
+            <SelectItem value="MONTH">Last 30 Days</SelectItem>
+            <SelectItem value="CUSTOM">Custom Range</SelectItem>
+          </SelectContent>
+        </Select>
         <Button
           onClick={handleDownloadExcel}
           variant="outline"
@@ -363,6 +408,27 @@ export default function AdminDashboardPage() {
           Download Excel
         </Button>
       </div>
+
+      {dateFilter === 'CUSTOM' && (
+        <div className="flex flex-col sm:flex-row gap-3 mb-3">
+          <div className="flex-1">
+            <label className="text-sm text-gray-600 mb-1 block">From</label>
+            <Input
+              type="date"
+              value={customStart}
+              onChange={(e) => setCustomStart(e.target.value)}
+            />
+          </div>
+          <div className="flex-1">
+            <label className="text-sm text-gray-600 mb-1 block">To</label>
+            <Input
+              type="date"
+              value={customEnd}
+              onChange={(e) => setCustomEnd(e.target.value)}
+            />
+          </div>
+        </div>
+      )}
 
       <p className="text-sm text-gray-500 mb-3">
         Showing <span className="font-semibold text-gray-800">{filtered.length}</span> of {bookings.length} bookings

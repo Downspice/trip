@@ -44,15 +44,15 @@ export default function HomePage() {
     },
     {
       icon: <Users className="w-8 h-8 text-primary" />,
-      title: "Parent Portals",
+      title: "Parent Updates",
       description: "Keep parents informed with real-time updates and secure visit booking."
     },
     {
       icon: <ShieldCheck className="w-8 h-8 text-primary" />,
       title: "Enhanced Safety",
-      description: "Advanced tracking and safety protocols to ensure every student is accounted for."
+      description: "Professional drivers supported by rigorous vehicle maintenance with robust safety protocols to ensure every student is secure."
     }
-  ];
+    ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background selection:bg-primary/30">
@@ -63,7 +63,7 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
               <Bus className="text-primary-foreground w-6 h-6" />
             </div>
-            <div className="text-2xl font-black tracking-tighter text-foreground">
+            <div className="text-4xl font-black tracking-tighter text-foreground">
               TRIIP
             </div>
             <Badge variant="secondary" className="hidden md:inline-flex ml-3 px-3 py-1 text-xs font-semibold rounded-full">
@@ -93,7 +93,7 @@ export default function HomePage() {
               className="relative h-full w-full"
             >
               <Image 
-                src="/hero-bus.jpeg" 
+                src="/hero-bus.png" 
                 alt="School Trip Journey" 
                 fill 
                 className="object-cover"
@@ -179,7 +179,7 @@ export default function HomePage() {
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold tracking-tight mb-4">Why Schools Choose TRIIP</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Designed for today's educational institutions to efficiently manage student transportation logistics.
+                Designed for today's educational institutions to efficiently manage student transportation logistics. It’s more than just a ride, it’s the smarter way to get to school. Safe. Comfortable. Always on time.
               </p>
             </div>
 
@@ -217,25 +217,29 @@ export default function HomePage() {
               
               <div className="flex-1 relative z-10">
                 <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                  Ready to upgrade your school's journey?
+                  Upgrade your school’s transport experience!
                 </h2>
                 <div className="space-y-4 mb-10">
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Real-time attendance tracking</span>
+                    <span className="text-lg">Real-time student attendance tracking</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Secure credit card payments</span>
+                    <span className="text-lg">Secure and seamless parent payment system</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Automated parent notifications</span>
+                    <span className="text-lg">Notifications to keep parents informed at every step</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="text-primary w-6 h-6" />
+                    <span className="text-lg">Delivering peace of mind for parents</span>
                   </div>
                 </div>
                 <Link href="/booking">
                   <Button size="lg" className="rounded-2xl h-14 px-8 font-bold bg-primary text-primary-foreground hover:bg-primary/90">
-                    Get Started Now
+                    Your Seat is Waiting. Ready to ride with us?
                   </Button>
                 </Link>
               </div>
@@ -243,20 +247,11 @@ export default function HomePage() {
               <div className="flex-1 w-full relative h-[400px]">
                 <div className="absolute inset-0 border-4 border-primary/30 rounded-3xl transform rotate-3" />
                 <div className="absolute inset-0 bg-background rounded-3xl overflow-hidden transform -rotate-2 shadow-2xl">
-                   <div className="p-8">
-                      <div className="flex items-center justify-between mb-8">
-                        <div className="h-6 w-32 bg-muted rounded-full" />
-                        <div className="h-10 w-10 bg-primary/20 rounded-full" />
-                      </div>
-                      <div className="space-y-4">
-                        <div className="h-12 w-full bg-muted/50 rounded-xl" />
-                        <div className="h-12 w-full bg-muted/50 rounded-xl" />
-                        <div className="h-12 w-3/4 bg-muted/50 rounded-xl" />
-                        <div className="h-24 w-full bg-primary/10 rounded-xl border border-primary/20 flex items-center justify-center">
-                           <span className="font-bold text-primary">Live Booking Active</span>
-                        </div>
-                      </div>
-                   </div>
+                  <img 
+                    src="/hero-students-waving.png" 
+                    alt="Students ready to board the bus" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -278,14 +273,14 @@ export default function HomePage() {
             © 2026 School Trip Logistics. All rights reserved.
           </p>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-6 text-sm font-semibold text-muted-foreground">
-            <span className="text-muted-foregroundd">Need help? Contact:</span>
+            <span className="text-muted-foregroundd">Need help?  Help desk:</span>
             <a  
               href="https://wa.me/233245605933"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
             >
-            +233 24 560 5933
+            If you need assistant to book: +233 24 560 5933
             </a>
             /
             <a
@@ -294,7 +289,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="hover:text-primary transition-colors"
             >
-               +233 53 682 2899
+               If you need clarification: +233 53 682 2899
             </a>
           </div>
         </div>

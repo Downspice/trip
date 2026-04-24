@@ -23,8 +23,8 @@ import type { House, Route, School, TripType } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
 const TRIP_TYPE_LABELS: Partial<Record<TripType, string>> = {
-  ONE_WAY_TO_SCHOOL: 'Going to School',
-  ONE_WAY_FROM_SCHOOL: 'Coming Home',
+  ONE_WAY_TO_SCHOOL: 'Resumption',
+  ONE_WAY_FROM_SCHOOL: 'Vacation',
 };
 
 function getRoutePrice(route: Route, type: string) {
@@ -178,7 +178,7 @@ export default function BookingPage() {
               {/* School Selection */}
               <div className="space-y-1.5">
                 <Label className="text-sm font-bold text-secondary uppercase tracking-wider">Step 1: Choose Your School</Label>
-                <Select onValueChange={(val) => setValue('schoolId', val)}>
+                <Select onValueChange={(val:any) => setValue('schoolId', val)}>
                   <SelectTrigger id="schoolId" className="h-12 border-2 focus:ring-primary">
                     <SelectValue placeholder="Select your school" />
                   </SelectTrigger>
@@ -209,7 +209,7 @@ export default function BookingPage() {
 
                     <div className="space-y-1.5">
                       <Label>Class</Label>
-                      <Select onValueChange={(val) => setValue('class', val)}>
+                      <Select onValueChange={(val:any) => setValue('class', val)}>
                         <SelectTrigger id="class">
                           <SelectValue placeholder="Select your Form" />
                         </SelectTrigger>
@@ -224,7 +224,7 @@ export default function BookingPage() {
 
                     <div className="space-y-1.5">
                       <Label>House</Label>
-                      <Select onValueChange={(val) => setValue('houseId', val)} disabled={loadingOptions}>
+                      <Select onValueChange={(val:any) => setValue('houseId', val)} disabled={loadingOptions}>
                         <SelectTrigger id="houseId">
                           <SelectValue placeholder={loadingOptions ? 'Loading...' : 'Select your house'} />
                         </SelectTrigger>
@@ -275,7 +275,7 @@ export default function BookingPage() {
                       <div className="space-y-1.5">
                         <Label>Route</Label>
                         <Select
-                          onValueChange={(val) => {
+                          onValueChange={(val:any) => {
                             setValue('routeId', val);
                             setValue('stopName', '');
                             setUseCustomDropoff(false);
@@ -294,7 +294,7 @@ export default function BookingPage() {
 
                       <div className="space-y-1.5">
                         <Label>Trip Type</Label>
-                        <Select onValueChange={(val) => {
+                        <Select onValueChange={(val:any) => {
                           setValue('tripType', val as TripType);
                           if (val !== 'ONE_WAY_FROM_SCHOOL' && useCustomDropoff) {
                             setUseCustomDropoff(false);
@@ -324,7 +324,7 @@ export default function BookingPage() {
                         {!useCustomDropoff ? (
                           <div className="space-y-2">
                             <Select
-                              onValueChange={(val) => {
+                              onValueChange={(val:any) => {
                                 if (val === '__custom__') {
                                   setUseCustomDropoff(true);
                                   setValue('stopName', '');
@@ -341,7 +341,7 @@ export default function BookingPage() {
                                   <SelectItem key={s.id} value={s.name}>{s.name}</SelectItem>
                                 ))}
                                 {selectedTripType === 'ONE_WAY_FROM_SCHOOL' && (
-                                  <SelectItem value="__custom__">📍 Enter a custom location…</SelectItem>
+                                  <SelectItem value="__custom__">📍 Enter a custom location if not in the list…</SelectItem>
                                 )}
                               </SelectContent>
                             </Select>

@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-import { Loader2, Search, RefreshCw, GraduationCap, Users } from 'lucide-react';
+import { Loader2, Search, RefreshCw, GraduationCap, Users, ArrowLeft } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -137,6 +137,14 @@ export default function BookingsPage() {
 
   return (
     <main className="container mx-auto px-4 py-10 max-w-[1400px]">
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="mb-4 -ml-3 text-gray-600 hover:text-gray-900"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Back
+      </Button>
       {/* Header */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -165,7 +173,7 @@ export default function BookingsPage() {
         </div>
 
         {/* Type filter */}
-        <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as typeof typeFilter)}>
+        <Select value={typeFilter} onValueChange={(v:any) => setTypeFilter(v as typeof typeFilter)}>
           <SelectTrigger className="w-full sm:w-44">
             <SelectValue placeholder="Type" />
           </SelectTrigger>

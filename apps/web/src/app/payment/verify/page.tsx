@@ -36,6 +36,12 @@ function VerifyContent() {
       .then((data) => {
         setResult(data);
         setStatus(data.success ? 'success' : 'failed');
+        if (data.success) {
+          sessionStorage.removeItem('bookingFormData');
+          sessionStorage.removeItem('bookingPreview');
+          sessionStorage.removeItem('visitBookingFormData');
+          sessionStorage.removeItem('visitBookingPreview');
+        }
       })
       .catch(() => {
         setStatus('failed');

@@ -45,9 +45,6 @@ export default function ConfirmPage() {
     setPaying(true);
     try {
       const result = await initializePayment(formData);
-      // Clear session storage
-      sessionStorage.removeItem('bookingPreview');
-      sessionStorage.removeItem('bookingFormData');
       // Redirect to Paystack
       window.location.href = result.authorization_url;
     } catch (error: any) {

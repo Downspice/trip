@@ -20,17 +20,17 @@ export class BookingsService {
    * Price is ALWAYS fetched from DB — never trusted from the client.
    */
   async preview(dto: PreviewBookingDto) {
-    const [school, route, house, programme] = await Promise.all([
+    const [school, route, house] = await Promise.all([
       this.prisma.school.findUnique({ where: { id: dto.schoolId } }),
       this.prisma.route.findUnique({ where: { id: dto.routeId }, include: { stops: true } }),
       this.prisma.house.findUnique({ where: { id: dto.houseId } }),
-      this.prisma.programme.findUnique({ where: { id: dto.programmeId } }),
+      //this.prisma.programme.findUnique({ where: { id: dto.programmeId } }),
     ]);
 
     if (!school) throw new NotFoundException('School not found');
     if (!route || route.schoolId !== dto.schoolId) throw new NotFoundException('Route not found or does not belong to the selected school');
     if (!house || house.schoolId !== dto.schoolId) throw new NotFoundException('House not found or does not belong to the selected school');
-    if (!programme || programme.schoolId !== dto.schoolId) throw new NotFoundException('Programme not found or does not belong to the selected school');
+    // if (!programme || programme.schoolId !== dto.schoolId) throw new NotFoundException('Programme not found or does not belong to the selected school');
 
     const price = getPriceFromRoute(route, dto.tripType);
 
@@ -43,7 +43,7 @@ export class BookingsService {
       whatsappContact: dto.whatsappContact,
       school: { id: school.id, name: school.name },
       house: { id: house.id, name: house.name },
-      programme: { id: programme.id, name: programme.name },
+      // programme: { id: programme.id, name: programme.name },
       route: { id: route.id, name: route.name, stops: route.stops },
       tripType: dto.tripType,
       stopName: dto.stopName ?? null,

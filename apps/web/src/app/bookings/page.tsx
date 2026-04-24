@@ -67,7 +67,7 @@ export default function BookingsPage() {
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
-  const [typeFilter, setTypeFilter] = useState<'ALL' | 'GOING_TO_SCHOOL' | 'COMING_HOME' | 'PARENT_VISIT'>('ALL');const [typeFilter, setTypeFilter] = useState<'ALL' | 'STUDENT_TRIP' | 'PARENT_VISIT'>('ALL');
+  const [typeFilter, setTypeFilter] = useState<'ALL' | 'GOING_TO_SCHOOL' | 'COMING_HOME' | 'PARENT_VISIT'>('ALL');
   const [schoolFilter, setSchoolFilter] = useState<string>('ALL');
 
   const loadData = async () => {

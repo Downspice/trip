@@ -56,7 +56,7 @@ export interface BookingFormData {
   class: string;
   schoolId: string;
   houseId: string;
-  programmeId: string;
+  programmeId?: string;
   email: string;
   parentName: string;
   parentContact: string;
@@ -136,11 +136,11 @@ export const getHouses = async (schoolId?: string): Promise<House[]> => {
   return data;
 };
 
-export const getProgrammes = async (schoolId?: string): Promise<Programme[]> => {
-  const url = schoolId ? `/programmes?schoolId=${schoolId}` : '/programmes';
-  const { data } = await api.get<Programme[]>(url);
-  return data;
-};
+// export const getProgrammes = async (schoolId?: string): Promise<Programme[]> => {
+//   const url = schoolId ? `/programmes?schoolId=${schoolId}` : '/programmes';
+//   const { data } = await api.get<Programme[]>(url);
+//   return data;
+// };
 
 export const getRoutes = async (schoolId?: string): Promise<Route[]> => {
   const url = schoolId ? `/routes?schoolId=${schoolId}` : '/routes';

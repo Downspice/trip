@@ -108,7 +108,7 @@ export default function BookingPage() {
       .then(([h, r, pr]) => {
         setHouses(h); setRoutes(r); setProgrammes(pr);
         setValue('houseId', '');
-        setValue('programmeId', pr[0]?.id || '');
+        // setValue('programmeId', pr[0]?.id || '');
         setValue('routeId', '');
         // @ts-ignore
         setValue('tripType', undefined);
@@ -237,21 +237,7 @@ export default function BookingPage() {
                       </Select>
                       {errors.houseId && <p className="text-sm text-destructive">{errors.houseId.message}</p>}
                     </div>
-
-                    {false && (
-                      <div className="space-y-1.5">
-                        <Label>Programme of Study</Label>
-                        <Select onValueChange={(val) => setValue('programmeId', val)} disabled={loadingOptions}>
-                          <SelectTrigger id="programmeId">
-                            <SelectValue placeholder={loadingOptions ? 'Loading...' : 'Select your programme'} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {programmes.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
-                          </SelectContent>
-                        </Select>
-                        {errors.programmeId && <p className="text-sm text-destructive">{errors.programmeId.message}</p>}
-                      </div>
-                    )}
+ 
 
                     <div className="space-y-1.5">
                       <Label htmlFor="email">Email Address</Label>

@@ -34,11 +34,11 @@ export class PaymentsService {
   ) { }
 
   async initialize(dto: InitializePaymentDto) {
-    const [school, route, house, programme] = await Promise.all([
+    const [school, route, house] = await Promise.all([
       this.prisma.school.findUnique({ where: { id: dto.schoolId } }),
       this.prisma.route.findUnique({ where: { id: dto.routeId } }),
       this.prisma.house.findUnique({ where: { id: dto.houseId } }),
-      this.prisma.programme.findUnique({ where: { id: dto.programmeId } }),
+      // this.prisma.programme.findUnique({ where: { id: dto.programmeId } }),
     ]);
 
     if (!school) throw new NotFoundException('School not found');
@@ -46,8 +46,8 @@ export class PaymentsService {
       throw new NotFoundException('Route not found or does not belong to the selected school');
     if (!house || house.schoolId !== dto.schoolId)
       throw new NotFoundException('House not found or does not belong to the selected school');
-    if (!programme || programme.schoolId !== dto.schoolId)
-      throw new NotFoundException('Programme not found or does not belong to the selected school');
+    // if (!programme || programme.schoolId !== dto.schoolId)
+    //   throw new NotFoundException('Programme not found or does not belong to the selected school');
 
     const price = getPriceFromRoute(route, dto.tripType);
 
@@ -57,7 +57,7 @@ export class PaymentsService {
         class: dto.class,
         schoolId: school.id,
         houseId: house.id,
-        programmeId: programme.id,
+        // programmeId: programme.id,
         email: dto.email,
         parentName: dto.parentName,
         parentContact: dto.parentContact,

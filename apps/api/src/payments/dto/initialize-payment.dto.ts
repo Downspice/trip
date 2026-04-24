@@ -19,8 +19,8 @@ export class InitializePaymentDto {
   houseId: string;
 
   @IsString()
-  @IsNotEmpty()
-  programmeId: string;
+  @IsOptional()
+  programmeId?: string;
 
   @IsEmail()
   email: string;

@@ -33,7 +33,7 @@ model Programme {
   name     String
   schoolId String
   school   School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
-  students Student[]
+  Student  Student[]
 
   @@unique([name, schoolId])
 }
@@ -74,7 +74,7 @@ model Student {
   whatsappContact String?
   bookings        Booking[]
   house           House     @relation(fields: [houseId], references: [id])
-  programme       Programme @relation(fields: [programmeId], references: [id])
+  Programme       Programme @relation(fields: [programmeId], references: [id])
   school          School    @relation(fields: [schoolId], references: [id], onDelete: Cascade)
 }
 

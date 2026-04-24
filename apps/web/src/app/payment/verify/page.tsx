@@ -103,8 +103,6 @@ function VerifyContent() {
                 <Separator />
                 <InfoRow label="House" value={booking.student.house.name} />
                 <Separator />
-                <InfoRow label="Programme" value={booking.student.programme.name} />
-                <Separator />
                 <InfoRow label="Parent Contact" value={booking.student.parentContact} />
               </>
             ) : booking.parentVisit ? (

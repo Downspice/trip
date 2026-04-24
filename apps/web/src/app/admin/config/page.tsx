@@ -24,9 +24,8 @@ import { useToast } from '@/hooks/use-toast';
 import {
   getSchools, createSchool, updateSchool, deleteSchool,
   getHouses, createHouse, updateHouse, deleteHouse,
-  getProgrammes, createProgramme, updateProgramme, deleteProgramme,
   getRoutes, createRoute, updateRoute, deleteRoute, addRouteStop, updateRouteStop, deleteRouteStop,
-  type School, type House, type Programme, type Route,
+  type School, type House, type Route,
 } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
@@ -181,13 +180,11 @@ export default function AdminConfigPage() {
 
   // Entities
   const [houses, setHouses] = useState<House[]>([]);
-  const [programmes, setProgrammes] = useState<Programme[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
   const [loadingEntities, setLoadingEntities] = useState(false);
 
   // New House/Programme/Route forms
   const [newHouseName, setNewHouseName] = useState('');
-  const [newProgrammeName, setNewProgrammeName] = useState('');
   const [newRouteName, setNewRouteName] = useState('');
   const [newRouteTo, setNewRouteTo] = useState('');
   const [newRouteFrom, setNewRouteFrom] = useState('');
@@ -195,8 +192,6 @@ export default function AdminConfigPage() {
   // Edit states
   const [editingHouseId, setEditingHouseId] = useState<string | null>(null);
   const [editHouseName, setEditHouseName] = useState('');
-  const [editingProgrammeId, setEditingProgrammeId] = useState<string | null>(null);
-  const [editProgrammeName, setEditProgrammeName] = useState('');
   const [editingRouteId, setEditingRouteId] = useState<string | null>(null);
   const [editRouteName, setEditRouteName] = useState('');
   const [editRouteTo, setEditRouteTo] = useState('');
@@ -217,13 +212,11 @@ export default function AdminConfigPage() {
     if (!schoolId) return;
     setLoadingEntities(true);
     try {
-      const [h, pr, ro] = await Promise.all([
+      const [h, ro] = await Promise.all([
         getHouses(schoolId),
-        getProgrammes(schoolId),
         getRoutes(schoolId),
       ]);
       setHouses(h);
-      setProgrammes(pr);
       setRoutes(ro);
     } catch {
       toast({ variant: 'destructive', title: 'Error', description: 'Failed to load entities.' });
@@ -268,7 +261,7 @@ export default function AdminConfigPage() {
       await deleteSchool(selectedSchoolId);
       setSchools(schools.filter((s) => s.id !== selectedSchoolId));
       setSelectedSchoolId('');
-      setHouses([]); setProgrammes([]); setRoutes([]);
+      setHouses([]); setRoutes([]);
       toast({ title: 'School deleted.' });
     } catch {
       toast({ variant: 'destructive', title: 'Error', description: 'Failed to delete school.' });
@@ -311,41 +304,6 @@ export default function AdminConfigPage() {
     }
   };
 
-  // ─── Programme Handlers ───────────────────────────────────────────────────
-  const handleCreateProgramme = async () => {
-    if (!newProgrammeName.trim() || !selectedSchoolId) return;
-    try {
-      const p = await createProgramme(newProgrammeName, selectedSchoolId);
-      setProgrammes([...programmes, p]);
-      setNewProgrammeName('');
-      toast({ title: 'Programme added.' });
-    } catch {
-      toast({ variant: 'destructive', title: 'Error', description: 'Failed to create programme.' });
-    }
-  };
-
-  const handleUpdateProgramme = async (id: string) => {
-    if (!editProgrammeName.trim()) return;
-    try {
-      const updated = await updateProgramme(id, editProgrammeName);
-      setProgrammes(programmes.map((p) => (p.id === id ? updated : p)));
-      setEditingProgrammeId(null);
-      toast({ title: 'Programme updated.' });
-    } catch {
-      toast({ variant: 'destructive', title: 'Error', description: 'Failed to update.' });
-    }
-  };
-
-  const handleDeleteProgramme = async (id: string) => {
-    if (!confirm('Delete this programme?')) return;
-    try {
-      await deleteProgramme(id);
-      setProgrammes(programmes.filter((p) => p.id !== id));
-      toast({ title: 'Programme removed.' });
-    } catch {
-      toast({ variant: 'destructive', title: 'Error', description: 'Failed to delete.' });
-    }
-  };
 
   // ─── Route Handlers ───────────────────────────────────────────────────────
   const handleCreateRoute = async () => {
@@ -406,7 +364,7 @@ export default function AdminConfigPage() {
     <main className="container mx-auto p-8 max-w-7xl">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Platform Configuration</h1>
-        <p className="text-gray-500">Manage schools, houses, programmes, and trip routes with 3-tier pricing.</p>
+        <p className="text-gray-500">Manage schools, houses, and trip routes with 3-tier pricing.</p>
       </div>
 
       {/* School Selection & Creation */}
@@ -523,56 +481,6 @@ export default function AdminConfigPage() {
               </CardContent>
             </Card>
 
-            {/* PROGRAMMES */}
-            {false && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Programmes</CardTitle>
-                <CardDescription>Manage academic programmes.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex space-x-2">
-                  <Input placeholder="Programme name" value={newProgrammeName} onChange={(e) => setNewProgrammeName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleCreateProgramme()} />
-                  <Button variant="secondary" onClick={handleCreateProgramme} disabled={!newProgrammeName.trim()}>Add</Button>
-                </div>
-                {loadingEntities ? (
-                  <div className="py-4 text-center"><Loader2 className="h-6 w-6 animate-spin mx-auto text-gray-400" /></div>
-                ) : (
-                  <div className="rounded-md border bg-white overflow-hidden">
-                    <Table>
-                      <TableBody>
-                        {programmes.length === 0 && (
-                          <TableRow><TableCell className="text-center text-gray-500 py-6">No programmes found</TableCell></TableRow>
-                        )}
-                        {programmes.map((prog) => (
-                          <TableRow key={prog.id} className="group">
-                            <TableCell className="font-medium p-2">
-                              {editingProgrammeId === prog.id ? (
-                                <Input value={editProgrammeName} onChange={(e) => setEditProgrammeName(e.target.value)} className="h-8 text-sm" autoFocus />
-                              ) : prog.name}
-                            </TableCell>
-                            <TableCell className="text-right p-2 w-24">
-                              {editingProgrammeId === prog.id ? (
-                                <div className="flex justify-end space-x-1">
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-green-600" onClick={() => handleUpdateProgramme(prog.id)}><Check className="h-4 w-4" /></Button>
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-500" onClick={() => setEditingProgrammeId(null)}><X className="h-4 w-4" /></Button>
-                                </div>
-                              ) : (
-                                <div className="flex justify-end space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-gray-500" onClick={() => { setEditingProgrammeId(prog.id); setEditProgrammeName(prog.name); }}><Edit2 className="h-4 w-4" /></Button>
-                                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDeleteProgramme(prog.id)}><Trash2 className="h-4 w-4" /></Button>
-                                </div>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-            )}
 
             {/* ROUTES */}
             <Card>

@@ -18,8 +18,8 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { bookingFormSchema, type BookingFormValues } from '@/lib/validations';
-import { getHouses, getProgrammes, getRoutes, getSchools, previewBooking } from '@/lib/api';
-import type { House, Programme, Route, School, TripType } from '@/lib/api';
+import { getHouses, getRoutes, getSchools, previewBooking } from '@/lib/api';
+import type { House, Route, School, TripType } from '@/lib/api';
 import { formatCurrency } from '@/lib/utils';
 
 const TRIP_TYPE_LABELS: Partial<Record<TripType, string>> = {
@@ -41,7 +41,6 @@ export default function BookingPage() {
   const [schools, setSchools] = useState<School[]>([]);
   const [houses, setHouses] = useState<House[]>([]);
   const [routes, setRoutes] = useState<Route[]>([]);
-  const [programmes, setProgrammes] = useState<Programme[]>([]);
   const [loadingSchools, setLoadingSchools] = useState(true);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -96,19 +95,17 @@ export default function BookingPage() {
 
   useEffect(() => {
     if (!selectedSchoolId) {
-      setHouses([]); setRoutes([]); setProgrammes([]);
+      setHouses([]); setRoutes([]);
       return;
     }
     setLoadingOptions(true);
     Promise.all([
       getHouses(selectedSchoolId),
       getRoutes(selectedSchoolId),
-      getProgrammes(selectedSchoolId),
     ])
-      .then(([h, r, pr]) => {
-        setHouses(h); setRoutes(r); setProgrammes(pr);
+      .then(([h, r]) => {
+        setHouses(h); setRoutes(r);
         setValue('houseId', '');
-        // setValue('programmeId', pr[0]?.id || '');
         setValue('routeId', '');
         // @ts-ignore
         setValue('tripType', undefined);

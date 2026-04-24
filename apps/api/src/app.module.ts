@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { StudentsModule } from './students/students.module';
 import { HousesModule } from './houses/houses.module';
-import { ProgrammesModule } from './programmes/programmes.module';
 import { SchoolsModule } from './schools/schools.module';
 import { RoutesModule } from './routes/routes.module';
 import { BookingsModule } from './bookings/bookings.module';
@@ -17,7 +16,6 @@ import { AuthModule } from './auth/auth.module';
     PrismaModule,
     StudentsModule,
     HousesModule,
-    ProgrammesModule,
     SchoolsModule,
     RoutesModule,
     BookingsModule,

@@ -38,7 +38,6 @@ export class PaymentsService {
       this.prisma.school.findUnique({ where: { id: dto.schoolId } }),
       this.prisma.route.findUnique({ where: { id: dto.routeId } }),
       this.prisma.house.findUnique({ where: { id: dto.houseId } }),
-      // this.prisma.programme.findUnique({ where: { id: dto.programmeId } }),
     ]);
 
     if (!school) throw new NotFoundException('School not found');
@@ -57,7 +56,6 @@ export class PaymentsService {
         class: dto.class,
         schoolId: school.id,
         houseId: house.id,
-        // programmeId: programme.id,
         email: dto.email,
         parentName: dto.parentName,
         parentContact: dto.parentContact,
@@ -162,7 +160,7 @@ export class PaymentsService {
     const booking = await this.prisma.booking.findUnique({
       where: { paymentReference: reference },
       include: {
-        student: { include: { house: true, programme: true, school: true } },
+        student: { include: { house: true, school: true } },
         parentVisit: { include: { school: true } },
         route: { include: { stops: true } },
       },
@@ -181,7 +179,7 @@ export class PaymentsService {
         where: { paymentReference: reference },
         data: { paymentStatus: 'SUCCESS' },
         include: {
-          student: { include: { house: true, programme: true, school: true } },
+          student: { include: { house: true, school: true } },
           parentVisit: { include: { school: true } },
           route: { include: { stops: true } },
         },

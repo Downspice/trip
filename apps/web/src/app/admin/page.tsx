@@ -21,7 +21,7 @@ export default function AdminLandingPage() {
     },
     {
       title: 'Platform Configuration',
-      description: 'Manage schools, houses, academic programmes, and trip routes with 3-tier pricing and stop points.',
+      description: 'Manage schools, houses, and trip routes with 3-tier pricing and stop points.',
       icon: Settings2,
       href: '/admin/config',
       accent: 'from-slate-700 to-slate-900',

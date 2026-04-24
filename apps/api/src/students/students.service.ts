@@ -9,13 +9,13 @@ export class StudentsService {
   async create(dto: any) {
     return this.prisma.student.create({
       data: dto,
-      include: { house: true, programme: true },
+      include: { house: true },
     });
   }
 
   async findAll() {
     return this.prisma.student.findMany({
-      include: { house: true, programme: true },
+      include: { house: true },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -23,7 +23,7 @@ export class StudentsService {
   async findOne(id: string) {
     const student = await this.prisma.student.findUnique({
       where: { id },
-      include: { house: true, programme: true },
+      include: { house: true },
     });
     if (!student) throw new NotFoundException(`Student ${id} not found`);
     return student;

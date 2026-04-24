@@ -210,7 +210,7 @@ export default function AdminDashboardPage() {
         getPersonName(b), getSchoolName(b), b.route?.name ?? '',
         b.paymentReference ?? '', b.stopName ?? '', b.customDropoff ?? '',
         b.student?.class ?? '', b.student?.house?.name ?? '',
-        b.student?.programme?.name ?? '', b.parentVisit?.parentContact ?? '',
+        b.parentVisit?.parentContact ?? '',
       ];
       return terms.some(t => t.toLowerCase().includes(q));
     });
@@ -232,7 +232,7 @@ export default function AdminDashboardPage() {
           : 'Parent Visit';
 
       const details = isStudent
-        ? [b.student?.class, b.student?.house?.name, b.student?.programme?.name].filter(Boolean).join(' · ')
+        ? [b.student?.class, b.student?.house?.name].filter(Boolean).join(' · ')
         : '';
 
       return {
@@ -422,7 +422,7 @@ export default function AdminDashboardPage() {
                       {b.type === 'STUDENT_TRIP' && b.student ? (
                         <div>
                           <div className="text-xs font-medium text-gray-700">{b.student.class}</div>
-                          <div className="text-xs text-gray-400">{b.student.house.name} · {b.student.programme.name}</div>
+                          <div className="text-xs text-gray-400">{b.student.house.name}</div>
                         </div>
                       ) : <span className="text-xs text-gray-400">—</span>}
                     </TableCell>

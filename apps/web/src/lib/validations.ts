@@ -11,7 +11,6 @@ export const bookingFormSchema = z.object({
     .max(20, 'Class name is too long'),
   schoolId: z.string().min(1, 'Please select a school'),
   houseId: z.string().min(1, 'Please select a house'),
-  //programmeId: z.string().min(1, 'Please select a programme'),
   email: z.string().email('Please enter a valid email address'),
   parentName: z
     .string()

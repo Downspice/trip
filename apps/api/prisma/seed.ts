@@ -28,14 +28,6 @@ async function main() {
   ]);
   console.log('✅ Seeded Houses');
 
-  // ── Programmes ───────────────────────────────────────────────────────────
-  await Promise.all([
-    prisma.programme.upsert({ where: { name_schoolId: { name: 'Science', schoolId: augusco.id } }, update: {}, create: { name: 'Science', schoolId: augusco.id } }),
-    prisma.programme.upsert({ where: { name_schoolId: { name: 'Business', schoolId: augusco.id } }, update: {}, create: { name: 'Business', schoolId: augusco.id } }),
-    prisma.programme.upsert({ where: { name_schoolId: { name: 'General Arts', schoolId: temasco.id } }, update: {}, create: { name: 'General Arts', schoolId: temasco.id } }),
-    prisma.programme.upsert({ where: { name_schoolId: { name: 'Visual Arts', schoolId: temasco.id } }, update: {}, create: { name: 'Visual Arts', schoolId: temasco.id } }),
-  ]);
-  console.log('✅ Seeded Programmes');
 
   // ── Routes for AUGUSCO ───────────────────────────────────────────────────
   const augRoute1 = await prisma.route.upsert({

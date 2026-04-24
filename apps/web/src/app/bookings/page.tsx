@@ -114,7 +114,6 @@ export default function BookingsPage() {
           person.includes(q) ||
           b.student.class.toLowerCase().includes(q) ||
           b.student.house.name.toLowerCase().includes(q) ||
-          b.student.programme.name.toLowerCase().includes(q) ||
           school.includes(q) ||
           route.includes(q) ||
           stop.includes(q) ||
@@ -271,7 +270,7 @@ export default function BookingsPage() {
                       {b.type === 'STUDENT_TRIP' && b.student ? (
                         <div className="space-y-0.5">
                           <div className="text-xs font-medium text-gray-700">{b.student.class}</div>
-                          <div className="text-xs text-gray-400">{b.student.house.name} · {b.student.programme.name}</div>
+                          <div className="text-xs text-gray-400">{b.student.house.name}</div>
                         </div>
                       ) : (
                         <span className="text-xs text-gray-400 italic">—</span>

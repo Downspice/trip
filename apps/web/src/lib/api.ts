@@ -18,7 +18,6 @@ api.interceptors.request.use((config) => {
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface House { id: string; name: string; }
-export interface Programme { id: string; name: string; }
 export interface School { id: string; name: string; }
 
 export type TripType = 'ONE_WAY_TO_SCHOOL' | 'ONE_WAY_FROM_SCHOOL';
@@ -42,7 +41,6 @@ export interface BookingPreview {
   parentContact: string;
   whatsappContact?: string;
   house?: House;
-  programme?: Programme;
   school?: School;
   route?: Route;
   tripType?: TripType;
@@ -56,7 +54,6 @@ export interface BookingFormData {
   class: string;
   schoolId: string;
   houseId: string;
-  programmeId?: string;
   email: string;
   parentName: string;
   parentContact: string;
@@ -106,7 +103,6 @@ export interface Booking {
     whatsappContact: string;
     school: School;
     house: House;
-    programme: Programme;
   };
   parentVisit?: {
     parentName: string;
@@ -136,11 +132,6 @@ export const getHouses = async (schoolId?: string): Promise<House[]> => {
   return data;
 };
 
-// export const getProgrammes = async (schoolId?: string): Promise<Programme[]> => {
-//   const url = schoolId ? `/programmes?schoolId=${schoolId}` : '/programmes';
-//   const { data } = await api.get<Programme[]>(url);
-//   return data;
-// };
 
 export const getRoutes = async (schoolId?: string): Promise<Route[]> => {
   const url = schoolId ? `/routes?schoolId=${schoolId}` : '/routes';
@@ -179,7 +170,7 @@ export const deleteRouteStop = async (routeId: string, stopId: string): Promise<
   await api.delete(`/routes/${routeId}/stops/${stopId}`);
 };
 
-// Admin Mutations – Schools, Houses, Programmes
+// Admin Mutations – Schools, Houses
 export const createSchool = async (name: string): Promise<School> => {
   const { data } = await api.post<School>('/schools', { name });
   return data;
@@ -204,17 +195,6 @@ export const deleteHouse = async (id: string): Promise<void> => {
   await api.delete(`/houses/${id}`);
 };
 
-export const createProgramme = async (name: string, schoolId: string): Promise<Programme> => {
-  const { data } = await api.post<Programme>('/programmes', { name, schoolId });
-  return data;
-};
-export const updateProgramme = async (id: string, name: string): Promise<Programme> => {
-  const { data } = await api.patch<Programme>(`/programmes/${id}`, { name });
-  return data;
-};
-export const deleteProgramme = async (id: string): Promise<void> => {
-  await api.delete(`/programmes/${id}`);
-};
 
 // Bookings & Payments
 export const previewBooking = async (formData: BookingFormData): Promise<BookingPreview> => {

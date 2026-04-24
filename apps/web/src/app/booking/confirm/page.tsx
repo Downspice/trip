@@ -92,8 +92,6 @@ export default function ConfirmPage() {
             <Separator />
             <InfoRow label="House" value={preview.house?.name || 'N/A'} />
             <Separator />
-            <InfoRow label="Programme" value={preview.programme?.name || 'N/A'} />
-            <Separator />
             <InfoRow label="Email" value={preview.email} />
             <Separator />
             <InfoRow label="Parent / Guardian" value={preview.parentName} />

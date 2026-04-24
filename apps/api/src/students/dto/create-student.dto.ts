@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateStudentDto {
   @IsString()
@@ -18,8 +18,8 @@ export class CreateStudentDto {
   houseId: string;
 
   @IsString()
-  @IsNotEmpty()
-  programmeId: string;
+  @IsOptional()
+  programmeId?: string;
 
   @IsEmail()
   email: string;

@@ -23,8 +23,8 @@ export class PreviewBookingDto {
   houseId: string;
 
   @IsString()
-  @IsNotEmpty()
-  programmeId: string;
+  @IsOptional()
+  programmeId?: string;
 
   @IsEmail()
   email: string;

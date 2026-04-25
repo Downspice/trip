@@ -63,7 +63,7 @@ export default function HomePage() {
             <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
               <Bus className="text-primary-foreground w-6 h-6" />
             </div>
-            <div className="text-4xl font-black tracking-tighter text-foreground">
+            <div className="text-2xl font-black tracking-tighter text-foreground">
               TRIIP
             </div>
             <Badge variant="secondary" className="hidden md:inline-flex ml-3 px-3 py-1 text-xs font-semibold rounded-full">
@@ -210,35 +210,38 @@ export default function HomePage() {
         </section>
 
         {/* trust section */}
-        <section className="py-20">
+        <section className="py-12 md:py-20">
           <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center gap-12 bg-secondary rounded-[3rem] p-12 md:p-20 text-secondary-foreground overflow-hidden relative">
               <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-48 -mt-48" />
               
-              <div className="flex-1 relative z-10">
-                <h2 className="text-4xl md:text-5xl font-black tracking-tight mb-6">
-                  Upgrade your school’s transport experience!
+              <div className="flex-1 relative z-10 w-full">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight mb-6">
+                  Upgrade your school's transport experience!
                 </h2>
-                <div className="space-y-4 mb-10">
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Real-time student attendance tracking</span>
+                <div className="space-y-3 md:space-y-4 mb-8 md:mb-10">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-primary w-5 h-5 md:w-6 md:h-6 flex-shrink-0 mt-0.5" />
+                    <span className="text-base md:text-lg">Real-time student attendance tracking</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Secure and seamless parent payment system</span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-primary w-5 h-5 md:w-6 md:h-6 flex-shrink-0 mt-0.5" />
+                    <span className="text-base md:text-lg">Secure and seamless parent payment system</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Notifications to keep parents informed at every step</span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-primary w-5 h-5 md:w-6 md:h-6 flex-shrink-0 mt-0.5" />
+                    <span className="text-base md:text-lg">Notifications to keep parents informed at every step</span>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary w-6 h-6" />
-                    <span className="text-lg">Delivering peace of mind for parents</span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="text-primary w-5 h-5 md:w-6 md:h-6 flex-shrink-0 mt-0.5" />
+                    <span className="text-base md:text-lg">Delivering peace of mind for parents</span>
                   </div>
                 </div>
-                <Link href="/booking">
-                  <Button size="lg" className="rounded-2xl h-14 px-8 font-bold bg-primary text-primary-foreground hover:bg-primary/90">
+                <Link href="/booking" className="block">
+                  <Button 
+                    size="lg" 
+                    className="w-full sm:w-auto rounded-2xl h-auto py-4 px-6 md:px-8 font-bold bg-primary text-primary-foreground hover:bg-primary/90 text-sm md:text-base whitespace-normal"
+                  >
                     Your Seat is Waiting. Ready to ride with us?
                   </Button>
                 </Link>
